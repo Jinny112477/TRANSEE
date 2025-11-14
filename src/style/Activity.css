@@ -1,0 +1,140 @@
+body {
+  font-family: "Prompt", sans-serif;
+  background: url('../Picture/BG_plain.png') no-repeat center top;
+  background-size: cover;
+}
+
+.container {
+  gap: 20px;                /* ระยะห่างแต่ละการ์ด */
+  padding-top: 100px;        /* ระยะห่างจากขอบบน */
+  padding-bottom: 30px;      /* ระยะห่างจากขอบล่าง */
+}
+
+.card-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+
+}
+
+.bi-house-fill{
+  font-size: 40px;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.bi-house-fill:hover {
+  transform: scale(1.15);
+  color: #7e1425; /* สีแดงเข้มตอน hover */
+}
+
+/* การ์ดกิจกรรม */
+.activity-card {
+  border-radius: 15px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.activity-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+.folder-container {
+  position: relative;
+  width: 80px;
+  height: 89px;
+  flex-shrink: 0;
+}
+
+/* ใส่โฟลเดอร์เป็น pseudo-element */
+.folder-container::before {
+  content: "";
+  position: absolute;
+  top: -4px; /* ปรับตรงนี้เพื่อเลื่อนขึ้น/ลง */
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../Picture/folder.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 0; /* อยู่ข้างหลังเลข */
+}
+
+.date-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 22px;
+  font-weight: bold;
+  color: #c0392b;
+  z-index: 1; /* อยู่บนสุด ไม่โดนทับ */
+}
+
+.activity-info {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 12px 16px;
+  background: #f9f9f9;
+  width: 200px;
+  text-align: left;
+  word-break: break-word;
+  white-space: normal;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.activity-info h5 {
+  font-size: 16px;
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.activity-info p {
+  font-size: 14px;
+  color: #555;
+  margin: 0;
+}
+
+.month-bar {
+  position: relative;
+  height: 50px;
+  background: #f0f0f0;
+  border-radius: 25px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 0 5px;
+  margin-bottom: 20px;
+}
+
+.indicator {
+  position: absolute;
+  height: 100%;
+  width: 8.333%;
+  background: #c0392b;
+  border-radius: 25px;
+  transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+}
+
+.month-label {
+  flex: 1;
+  text-align: center;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+  z-index: 1;
+  transition: color 0.3s;
+}
+
+.month-label.active {
+  color: #fff;
+}

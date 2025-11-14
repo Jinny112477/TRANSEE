@@ -1,0 +1,126 @@
+body {
+  background: linear-gradient(135deg, #f6d365, #fda085);
+  margin: 0;
+  height: 100vh;              /* ให้เต็มจอ */
+  display: flex;              /* ใช้ flex จัดกึ่งกลาง */
+  justify-content: center;    /* จัดกลางแนวนอน */
+  align-items: center;        /* จัดกลางแนวตั้ง */
+  background: url('../Picture/Main_BG.png') no-repeat center top;
+  background-size: cover;
+}
+
+* {
+  font-family: "Prompt", sans-serif !important;
+}
+
+.container {
+  width: 900px;         
+  height: 500px;        
+  background: #fff;
+  padding: 30px 35px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  display: flex;
+  flex-direction: column;
+  margin-top: 100px; 
+}
+
+.bi-arrow-left{
+  font-size: 40px;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.bi-arrow-left:hover {
+  transform: scale(1.15);
+  color: #7e1425; /* สีแดงเข้มตอน hover */
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.search-box input {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 15px;
+}
+
+.search-box i {
+  color: #888;
+  margin-left: 6px;
+}
+
+.student-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;          /* ✅ เพิ่ม gap หน่อย */
+  overflow-y: auto;
+  padding: 10px;      /* ✅ กันไม่ให้การ์ดติดขอบ container */
+}
+
+.student-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fafafa;
+  padding: 15px 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(94, 86, 86, 0.12);
+  transition: all 0.25s ease;   /* ✅ เพิ่ม transition ให้เอฟเฟกต์นุ่ม */
+}
+
+.student-card:hover {
+  background: #f0f0f0;              /* เปลี่ยนสีพื้นหลังเล็กน้อย */
+  transform: translateY(-5px);      /* ยกการ์ดขึ้น 5px แทนการขยาย */
+  box-shadow: 0 4px 7px rgba(85, 81, 81, 0.2); /* เงาเข้มขึ้น */  
+}
+
+.profile-icon {
+  font-size: 42px;
+  margin-right: 18px;
+  color: #444;
+}
+
+.student-info {
+  flex: 1;
+}
+
+.student-name {
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+
+.student-id {
+  font-size: 1.1rem;
+  color: #555;
+}
+
+.menu-icon {
+  font-size: 30px;
+  color: #444;
+  cursor: pointer;
+}
+.menu-icon:hover {
+  color: #d9534f;   /* เปลี่ยนเป็นสีแดง หรือจะเลือกสีอื่นก็ได้ */
+}

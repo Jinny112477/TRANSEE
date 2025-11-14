@@ -1,0 +1,59 @@
+/* พื้นหลัง */
+body {
+  background: url("../Picture/Main_BG.png") no-repeat center top;
+  background-size: cover;
+  font-family: "Prompt", sans-serif;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;   /* เรียงแนวตั้ง */
+  align-items: center;      /* จัดให้อยู่กลาง */
+  padding-top: 120px;        /* ระยะห่างจากขอบบน */
+  padding-bottom: 30px;     /* ระยะห่างจากขอบล่าง */
+}
+
+.bi-house-fill{
+  font-size: 40px;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.bi-house-fill:hover {
+  transform: scale(1.15);
+  color: #7e1425; /* สีแดงเข้มตอน hover */
+}
+
+/* กล่องหลัก */
+.main-card {
+  border-radius: 25px !important; /* บังคับทับ Bootstrap เพราะ shadow ของ bootstrap บังอยู่ */
+  width: 95%;
+  overflow: hidden; /* บังคับให้เงาไม่กินมุม */
+}
+
+.card-header {
+    padding: 20px 30px;
+}
+
+/* การ์ดกิจกรรม */
+.activity-card {
+  border-radius: 12px;
+  border: 1px solid #4d4d4d;
+}
+
+/* สถานะ */
+.status {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  color: white;
+  font-weight: 500;
+  min-width: 80px;
+  text-align: center;
+}
+
+.status.approved { background-color: #28a745; /* เขียว */}
+.status.pending { background-color: #6c757d; /* เทา */}
+.status.rejected { background-color: #dc3545; /* แดง */}
+

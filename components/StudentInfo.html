@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StudentInfo</title>
+
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="../src/Picture/favicon.png"
+      sizes="64x64"
+    />
+    <link rel="shortcut icon" href="../src/Picture/favicon.png" />
+    <link rel="apple-touch-icon" href="../src/Picture/favicon.png" />
+
+    <!-- Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../src/style/StudentInfo.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <!-- Left side -->
+      <div class="left-panel">
+        <h1>Student<br />Information</h1>
+        <div class="logo">
+          <img src="../src/Picture/Logo_TU PINEColor.png" alt="Logo" />
+        </div>
+      </div>
+
+      <!-- Right side -->
+      <div class="right-panel">
+        <h2>ข้อมูลนักศึกษา</h2>
+        <div class="student-info">
+          <!-- profile photo -->
+          <div class="profile-photo">
+            <h5>รูปนักศึกษา</h5>
+            <img
+              src="../src/Picture/Profile photo.png"
+              alt="Student Photo"
+              id="preview"
+            />
+
+            <!-- ปุ่มอัปโหลด -->
+            <input type="file" id="fileInput" accept=".jpg,.png" hidden />
+            <button
+              class="upload-btn"
+              onclick="document.getElementById('fileInput').click()"
+            >
+              อัปโหลดรูปภาพ (.jpg)
+            </button>
+          </div>
+
+          <script>
+            // แสดงรูป preview หลังเลือกไฟล์
+            document
+              .getElementById("fileInput")
+              .addEventListener("change", function (event) {
+                const file = event.target.files[0];
+                if (file) {
+                  const reader = new FileReader();
+                  reader.onload = function (e) {
+                    document.getElementById("preview").src = e.target.result;
+                  };
+                  reader.readAsDataURL(file);
+                }
+              });
+          </script>
+
+          <div class="info-fields">
+            <div class="form-group">
+              <!-- pronoun -->
+              <div class="form-floating">
+                <select
+                  class="form-select"
+                  id="floatingSelectP"
+                  aria-label="Floating label select example"
+                >
+                  <option value="Mr">นาย</option>
+                  <option value="Mrs">นาง</option>
+                  <option value="Miss">นางสาว</option>
+                </select>
+                <label for="floatingSelectP">คำนำหน้า</label>
+              </div>
+
+              <!-- name -->
+              <div class="form-floating mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="fullName"
+                  placeholder="ชื่อจริง-นามสกุล"
+                  required
+                />
+                <label for="fullName">ชื่อจริง-นามสกุล</label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <!-- studentID -->
+              <div class="form-floating mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="studentID"
+                  placeholder="xxxxxxxxxx"
+                  required
+                />
+                <label for="studentID">รหัสนักศึกษา</label>
+              </div>
+
+              <!-- birthdate -->
+              <div class="form-floating mb-3">
+                <input
+                  type="date"
+                  class="form-control"
+                  id="birthdate"
+                  placeholder="25/04/2549"
+                  min="1900-01-01"
+                  max="2009-12-31"
+                  required
+                  onkeydown="return false;"
+                />
+                <label for="birthdate">วัน/เดือน/ปีเกิด (25/04/2549)</label>
+              </div>
+            </div>
+
+            <!-- email -->
+            <div class="form-floating mb-3">
+              <input
+                type="email"
+                readonly
+                class="form-control readonly-field"
+                id="email"
+                placeholder="name@dome.tu.ac.th"
+              />
+              <label for="email">Email address</label>
+            </div>
+            <script>
+              // Fetch email from backend and set it in the email input
+              fetch("/api/user-email")
+                .then((response) => response.json())
+                .then((data) => {
+                  if (data.email) {
+                    document.getElementById("email").value = data.email;
+                  }
+                });
+            </script>
+
+            <!-- phone number -->
+            <div class="form-floating mb-3">
+              <input
+                type="tel"
+                class="form-control"
+                id="phone"
+                pattern="[0-9]{10}"
+                placeholder="xxxxxxxxxx"
+                required
+              />
+              <label for="phone">หมายเลขโทรศัพท์</label>
+            </div>
+          </div>
+        </div>
+
+        <h2>ข้อมูลการศึกษา</h2>
+        <div class="edu-info">
+          <div class="form-group">
+            <div class="form-floating">
+              <input
+                type="text"
+                readonly
+                class="form-control readonly-field"
+                value="คณะวิศวกรรมศาสตร์"
+              />
+              <label>คณะ</label>
+            </div>
+
+            <div class="form-floating">
+              <select
+                class="form-select"
+                id="floatingSelect"
+                aria-label="Floating label select example"
+                required
+              >
+                <option value="" selected disabled>เลือกหลักสูตร</option>
+                <option value="วิศวกรรมซอฟต์แวร์">วิศวกรรมซอฟต์แวร์</option>
+                <option value="วิศวกรรมโยธาและการบริหารการก่อสร้าง">
+                  วิศวกรรมโยธาและการบริหารการก่อสร้าง
+                </option>
+                <option value="วิศวกรรมไฟฟ้าและการจัดการอุตสาหกรรม">
+                  วิศวกรรมไฟฟ้าและการจัดการอุตสาหกรรม
+                </option>
+              </select>
+              <label for="course">หลักสูตรที่กำลังศึกษา</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <!-- Year input with validation -->
+            <div class="form-floating mb-3">
+              <select
+                class="form-select"
+                id="year"
+                aria-label="ปีการศึกษาที่เข้าศึกษา"
+                required
+              >
+                <option value="" selected disabled>เลือกปีการศึกษา</option>
+                <option value="2565">2565</option>
+                <option value="2566">2566</option>
+                <option value="2567">2567</option>
+                <option value="2568">2568</option>
+              </select>
+              <label for="year">ปีการศึกษาที่เข้าศึกษา</label>
+            </div>
+
+            <!-- GPAX input with validation -->
+            <div class="form-floating mb-3">
+              <input
+                type="number"
+                class="form-control"
+                id="gpax"
+                placeholder="4.00"
+                min="0.00"
+                max="4.00"
+                step="0.01"
+                oninput="if(this.value > 4) this.value = 4"
+                required
+              />
+              <label for="gpax">GPAX</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Check Box -->
+        <div class="form-group checkbox d-flex align-items-center">
+          <input type="checkbox" id="consent" />
+          <label for="consent" class="ms-2">ยืนยันข้อมูล</label>
+
+          <!-- ไอคอนแจ้งเตือน -->
+          <span
+            id="consentWarning"
+            class="ms-2 text-danger"
+            data-bs-toggle="tooltip"
+            data-bs-placement="right"
+            title="กรุณายืนยันข้อมูลก่อนบันทึก"
+            style="display: none; cursor: pointer"
+          >
+            &#9888;
+          </span>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="d-flex justify-content-center">
+          <button type="button" id="submitBtn" class="btn btn-submit">
+            บันทึกข้อมูล
+          </button>
+        </div>
+
+        <!-- Modal -->
+        <div
+          class="modal fade modal-top"
+          id="successModal"
+          tabindex="-1"
+          aria-labelledby="successModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="successModalLabel">System.says</h5>
+              </div>
+              <div class="modal-body text-left">
+                <p>บันทึกข้อมูล สำเร็จ!</p>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  id="closeModalBtn"
+                  class="btn btn-danger"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script>
+          // เปิดใช้งาน tooltip ของ bootstrap
+          const tooltipTriggerList = [].slice.call(
+            document.querySelectorAll('[data-bs-toggle="tooltip"]')
+          );
+          tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+          });
+
+          const formFields = document.querySelectorAll(
+            ".right-panel input:not([readonly]), .right-panel select"
+          );
+
+          formFields.forEach((field) => {
+            field.addEventListener("input", () => validateField(field));
+            field.addEventListener("change", () => validateField(field));
+          });
+
+          // Debounce helper
+          function debounce(func, wait) {
+            let timeout;
+            return function (...args) {
+              clearTimeout(timeout);
+              timeout = setTimeout(() => func.apply(this, args), wait);
+            };
+          }
+
+          // ✅ Async field validation
+          async function validateField(field) {
+            let valid = true;
+            let message = "";
+            const value = field.value.trim();
+
+            switch (field.id) {
+              case "fullName":
+                if (!value || !value.includes(" ")) {
+                  valid = false;
+                  message =
+                    "กรุณากรอกชื่อและนามสกุลให้ถูกต้อง (ต้องมีเว้นวรรค)";
+                }
+                break;
+
+              case "studentID":
+                if (!/^\d{10}$/.test(value)) {
+                  valid = false;
+                  message = "รหัสนักศึกษาต้องมี 10 หลัก";
+                }
+                break;
+
+              case "phone":
+                if (!/^\d{10}$/.test(value)) {
+                  valid = false;
+                  message = "หมายเลขโทรศัพท์ต้องมี 10 หลัก";
+                }
+                break;
+
+              case "birthdate":
+                if (!value) {
+                  valid = false;
+                  message = "กรุณาเลือกวันเกิด";
+                }
+                break;
+
+              case "year":
+                const year = parseInt(value);
+                if (!value || isNaN(year) || year < 2559 || year > 2568) {
+                  valid = false;
+                  message = "กรุณากรอกปีการศึกษาที่เข้าศึกษาให้ถูกต้อง";
+                }
+                break;
+
+              case "gpax":
+                const gpax = parseFloat(value);
+                if (!value || isNaN(gpax) || gpax < 0 || gpax > 4) {
+                  valid = false;
+                  message = "กรุณากรอก GPAX 0.00-4.00";
+                }
+                break;
+
+              case "floatingSelect":
+              case "course":
+                if (!value) {
+                  valid = false;
+                  message = "กรุณาเลือกหลักสูตร";
+                }
+                break;
+            }
+
+            if (!valid) {
+              field.classList.add("is-invalid");
+              field.setAttribute("data-bs-toggle", "tooltip");
+              field.setAttribute("title", message);
+
+              if (!field.dataset.bsTooltip) {
+                const tooltip = new bootstrap.Tooltip(field);
+                field.dataset.bsTooltip = tooltip;
+              }
+            } else {
+              field.classList.remove("is-invalid");
+
+              if (field.dataset.bsTooltip) {
+                const tooltip = bootstrap.Tooltip.getInstance(field);
+                tooltip.dispose();
+                delete field.dataset.bsTooltip;
+              }
+
+              field.removeAttribute("data-bs-toggle");
+              field.removeAttribute("title");
+            }
+          }
+
+          // Real-time studentID existence check
+          const studentIDField = document.getElementById("studentID");
+          studentIDField.addEventListener(
+            "input",
+            debounce(async function () {
+              const value = studentIDField.value.trim();
+
+              // Reset previous error first
+              studentIDField.classList.remove("is-invalid");
+              if (studentIDField.dataset.bsTooltip) {
+                const tooltip = bootstrap.Tooltip.getInstance(studentIDField);
+                tooltip.dispose();
+                delete studentIDField.dataset.bsTooltip;
+              }
+              studentIDField.removeAttribute("title");
+
+              if (/^\d{10}$/.test(value)) {
+                try {
+                  const res = await fetch(`/api/check-student-id/${value}`);
+                  const result = await res.json();
+                  if (result.exists) {
+                    studentIDField.classList.add("is-invalid");
+                    studentIDField.setAttribute(
+                      "title",
+                      "รหัสนักศึกษานี้ถูกใช้ไปแล้ว"
+                    );
+
+                    // Create tooltip
+                    const tooltip = new bootstrap.Tooltip(studentIDField);
+                    studentIDField.dataset.bsTooltip = tooltip;
+                  }
+                } catch (err) {
+                  console.error("Error checking student ID:", err);
+                }
+              }
+            }, 500)
+          );
+
+          const consent = document.getElementById("consent");
+          const consentWarning = document.getElementById("consentWarning");
+
+          consent.addEventListener("change", () => {
+            if (!consent.checked) {
+              consent.classList.add("is-invalid");
+              consentWarning.style.display = "inline";
+            } else {
+              consent.classList.remove("is-invalid");
+              consentWarning.style.display = "none";
+            }
+          });
+
+          const inputs = document.querySelectorAll(
+            ".right-panel input:not([readonly]), .right-panel select"
+          );
+
+          // ======= BUDDHIST DATE PICKER SCRIPT =======
+          const birthdateInput = document.getElementById("birthdate");
+          const minBuddhistYear = 2490; // minimum allowed year
+          const maxBuddhistYear = 2552; // max year = 2009 Gregorian
+
+          function buddhistToGregorian(dateStr) {
+            const [yearBE, month, day] = dateStr.split("-").map(Number);
+            return new Date(yearBE - 543, month - 1, day);
+          }
+
+          function gregorianToBuddhist(date) {
+            const day = ("0" + date.getDate()).slice(-2);
+            const month = ("0" + (date.getMonth() + 1)).slice(-2);
+            const yearBE = date.getFullYear() + 543;
+            return `${yearBE}-${month}-${day}`;
+          }
+
+          // format Date to local YYYY-MM-DD (avoids UTC shift from toISOString)
+          function formatDateLocal(date) {
+            const y = date.getFullYear();
+            const m = ("0" + (date.getMonth() + 1)).slice(-2);
+            const d = ("0" + date.getDate()).slice(-2);
+            return `${y}-${m}-${d}`;
+          }
+
+          const today = new Date();
+          birthdateInput.value = gregorianToBuddhist(today);
+
+          const minDate = new Date(minBuddhistYear - 543, 0, 1);
+          const maxDate = new Date(maxBuddhistYear - 543, 11, 31);
+          birthdateInput.min = gregorianToBuddhist(minDate);
+          birthdateInput.max = gregorianToBuddhist(maxDate);
+
+          birthdateInput.dataset.gregorian = formatDateLocal(today);
+
+          birthdateInput.addEventListener("keydown", (e) => e.preventDefault());
+
+          birthdateInput.addEventListener("change", (e) => {
+            let selectedDate = buddhistToGregorian(e.target.value);
+            if (selectedDate < minDate) selectedDate = minDate;
+            if (selectedDate > maxDate) selectedDate = maxDate;
+            birthdateInput.value = gregorianToBuddhist(selectedDate);
+            birthdateInput.dataset.gregorian = formatDateLocal(selectedDate);
+          });
+
+          // Submit button
+          document
+            .getElementById("submitBtn")
+            .addEventListener("click", async function () {
+              let isValid = true;
+
+              for (const input of inputs) {
+                await validateField(input);
+                if (input.classList.contains("is-invalid")) {
+                  isValid = false;
+                }
+              }
+
+              if (!consent.checked) {
+                consent.classList.add("is-invalid");
+                consentWarning.style.display = "inline";
+                isValid = false;
+              }
+
+              if (isValid) {
+                const data = {
+                  pronouns: document.getElementById("floatingSelectP").value,
+                  full_name: document.getElementById("fullName").value,
+                  student_id: document.getElementById("studentID").value,
+                  birth_date: birthdateInput.dataset.gregorian, // send Gregorian date
+                  email: document.getElementById("email").value,
+                  phone_number: document.getElementById("phone").value,
+                  faculty: document.getElementById("floatingSelect").value,
+                  academic_year: document.getElementById("year").value,
+                  GPAX: document.getElementById("gpax").value,
+                  img: document.getElementById("preview").src,
+                };
+
+                await fetch("/add-student", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify(data),
+                });
+
+                const successModal = new bootstrap.Modal(
+                  document.getElementById("successModal")
+                );
+                successModal.show();
+
+                document
+                  .getElementById("closeModalBtn")
+                  .addEventListener("click", function () {
+                    window.location.href = "HomePage.html";
+                  });
+              }
+            });
+
+          // GPAX input fix
+          const gpaxInput = document.getElementById("gpax");
+          gpaxInput.addEventListener("blur", () => {
+            let value = parseFloat(gpaxInput.value);
+            if (!isNaN(value)) {
+              if (value > 4) value = 4;
+              if (value < 0) value = 0;
+              gpaxInput.value = value.toFixed(2);
+            } else {
+              gpaxInput.value = "";
+            }
+          });
+        </script>
+      </div>
+    </div>
+  </body>
+</html>

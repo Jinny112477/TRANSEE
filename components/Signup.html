@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up</title>
+
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="../src/Picture/favicon.png"
+      sizes="64x64"
+    />
+    <link rel="shortcut icon" href="../src/Picture/favicon.png" />
+    <link rel="apple-touch-icon" href="../src/Picture/favicon.png" />
+    
+    <!-- Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../src/style/Signup.css" />
+  </head>
+  <body>
+    <div
+      class="main-container d-flex flex-column justify-content-center align-items-center"
+    >
+      <div id="alert-container" class="alert-container"></div>
+
+      <!-- Login Box -->
+      <div class="login-box p-5">
+        <h2 class="text-center">เริ่มกันเลย!</h2>
+        <div class="form-area">
+          <form>
+            <!-- Email -->
+            <div class="form-floating mb-3">
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+                placeholder="Enter Email"
+                required
+              />
+              <label for="email">อีเมล</label>
+            </div>
+            <!-- Password -->
+            <div class="form-floating mb-3">
+              <input
+                type="password"
+                class="form-control"
+                id="password"
+                name="password"
+                placeholder="Enter Password"
+                required
+              />
+              <label for="password">รหัสผ่าน</label>
+            </div>
+            <!-- Confirm Password -->
+            <div class="form-floating mb-4">
+              <input
+                type="password"
+                class="form-control"
+                id="confirm-password"
+                name="confirm-password"
+                placeholder="Confirm Password"
+                required
+              />
+              <label for="confirm-password">ยืนยันรหัสผ่าน</label>
+            </div>
+            <!-- Button -->
+            <div class="d-flex justify-content-center">
+              <button type="submit" class="btn btn-login">ลงทะเบียน</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      // Save signed-up email to localStorage before form submits
+      document.addEventListener("DOMContentLoaded", () => {
+        const form = document.querySelector("form");
+        if (!form) return;
+        form.addEventListener("submit", handleSignup);
+        form.addEventListener("submit", () => {
+          const emailInput = document.getElementById("email");
+          const email = emailInput?.value?.trim();
+          if (email) localStorage.setItem("userEmail", email);
+        });
+      });
+
+      function showAlert(message, type = "danger", isSignup = false) {
+        const container = document.getElementById("alert-container");
+
+        const alert = document.createElement("div");
+        alert.className = `custom-toast border-start border-4 border-${type}`;
+        alert.innerHTML = `
+          <div class="toast-header">
+            <strong class="me-auto text-${type}">${message}</strong>
+            <button type="button" class="btn-close ms-2 mb-1" aria-label="Close"></button>
+          </div>
+          <div class="toast-progress bg-${type}"></div>
+        `;
+
+        container.appendChild(alert);
+
+        alert
+          .querySelector(".btn-close")
+          .addEventListener("click", () => alert.remove());
+
+        setTimeout(() => {
+          alert.querySelector(".toast-progress").style.width = "0%";
+        }, 100);
+
+        setTimeout(() => {
+          alert.style.opacity = "0";
+          setTimeout(() => alert.remove(), 500);
+          if (isSignup) {
+            console.log("Signup successful");
+            fetch("/api/signup", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                email: document.getElementById("email").value.trim(),
+                password: document.getElementById("password").value.trim(),
+              }),
+            });
+            setTimeout(() => {
+              window.location.href = "StudentInfo.html";
+            }, 500);
+          }
+        }, 3000);
+      }
+
+      async function handleSignup(event) {
+        event.preventDefault();
+
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
+        const confirmPassword = document
+          .getElementById("confirm-password")
+          .value.trim();
+
+        // ✅ Password length check
+        if (password.length < 8) {
+          showAlert("รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร", "danger");
+          return;
+        }
+
+        fetch("/api/users/" + encodeURIComponent(email))
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            if (email === "" || password === "" || confirmPassword === "") {
+              showAlert("กรุณากรอกข้อมูลให้ครบทุกช่อง", "notice");
+              return;
+            } else if (email === data.email) {
+              showAlert("อีเมลนี้ถูกใช้ไปแล้ว", "danger");
+            } else if (password !== confirmPassword) {
+              showAlert("รหัสผ่านไม่ตรงกัน", "danger");
+            } else {
+              showAlert("ลงทะเบียนสำเร็จ! ✅", "success", true);
+            }
+          });
+      }
+    </script>
+  </body>
+</html>

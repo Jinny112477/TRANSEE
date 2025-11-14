@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Status</title>
+
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="../src/Picture/favicon.png"
+      sizes="64x64"
+    />
+    <link rel="shortcut icon" href="../src/Picture/favicon.png" />
+    <link rel="apple-touch-icon" href="../src/Picture/favicon.png" />
+
+    <!-- Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../src/style/status.css" />
+  </head>
+
+  <body>
+    <!-- ปุ่มไอคอน Home -->
+    <div style="position: absolute; top: 30px; left: 30px; z-index: 1000">
+      <i id="homeIcon" class="bi bi-house-fill" style="cursor: pointer"></i>
+    </div>
+
+    <!-- Logo at top-right -->
+    <div style="position: absolute; top: 30px; right: 30px; z-index: 1000">
+      <img
+        src="../src/Picture/Logo_TU_PINE.png"
+        alt="TSE white Logo"
+        style="height: 120px; object-fit: contain"
+      />
+    </div>
+
+    <div class="container my-4" style="position: relative">
+      <!-- Item ต่างๆอยู่ center ของจอ -->
+      <div class="card shadow-lg mt-4 main-card">
+        <!-- Header -->
+        <div
+          class="card-header d-flex justify-content-between align-items-center bg-white border-0"
+        >
+          <h3 class="fw-bold mb-0">สถานะส่งคำขอ</h3>
+          <button class="btn btn-danger d-flex align-items-center">
+            <i
+              style="font-size: 1.2rem"
+              onclick="window.location.href='Activity.html'"
+              class="bi bi-plus-lg me-1"
+              >เพิ่มกิจกรรม</i
+            >
+            <!-- เชื่อมหน้ากับปุ่มนี้ -->
+          </button>
+        </div>
+        <!-- Body -->
+        <div class="card-body">
+          <!-- การ์ดกิจกรรม Sample-->
+          <div class="activity-card card mb-3">
+            <!-- <div class="card-body d-flex justify-content-between align-items-center">
+            <span class="fw-medium">Software Engineering Camp</span>
+            <div class="d-flex align-items-center">
+              <span class="me-3 text-muted" style="font-size: 1.2rem">30/10/2025</span>
+              <span class="status approved">อนุมัติ</span>
+            </div>
+          </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Import navigation function along with supabase-->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.38.0/dist/umd/supabase.min.js"></script>
+    <script src="../components/navigation.js"></script>
+
+    <script>
+      (async function init() {
+        try {
+          // 1️⃣ Get studentId
+          let studentId = null;
+          try {
+            const meResp = await fetch("/api/student_info/me");
+            if (meResp.ok) {
+              const meData = await meResp.json();
+              studentId = meData.student_id || null;
+            }
+          } catch (err) {
+            console.error("Error fetching student info:", err);
+          }
+
+          if (!studentId) {
+            console.warn("No studentId found; aborting status load.");
+            document.querySelector(".card-body").innerHTML =
+              '<div class="text-muted small">ไม่พบข้อมูลนักศึกษา กรุณาเข้าสู่ระบบ</div>';
+            return;
+          }
+
+          // 2️⃣ Fetch all requests for this student
+          const reqResp = await fetch(
+            "/api/requests/" + encodeURIComponent(studentId)
+          );
+          if (!reqResp.ok)
+            throw new Error("Failed to fetch requests: " + reqResp.status);
+          const requests = await reqResp.json();
+          if (!Array.isArray(requests) || requests.length === 0) {
+            document.querySelector(".card-body").innerHTML =
+              '<div class="text-muted small">ยังไม่มีคำขอ</div>';
+            return;
+          }
+
+          // 3️⃣ Deduplicate by activity ID
+          const mapByAct = new Map();
+          requests.forEach((r) => {
+            const actId =
+              r.act_id ?? r.activity_id ?? r.activityId ?? r.actId ?? "";
+            mapByAct.set(String(actId), r); // Keep last occurrence
+          });
+          const uniqueRequests = Array.from(mapByAct.values());
+
+          // 4️⃣ Fetch activity details for each unique request
+          const results = await Promise.all(
+            uniqueRequests.map((r) => {
+              const actId =
+                r.act_id ?? r.activity_id ?? r.activityId ?? r.actId ?? "";
+              return fetch("/api/activity/" + encodeURIComponent(actId))
+                .then((res) => (res.ok ? res.json() : null))
+                .then((activity) => ({ request: r, activity }))
+                .catch((err) => ({ request: r, activity: null }));
+            })
+          );
+
+          // 5️⃣ Map status codes to Thai
+          const statusTextMap = {
+            approved: "อนุมัติ",
+            pending: "กำลังพิจารณา",
+            rejected: "ไม่อนุมัติ",
+          };
+
+          // 6️⃣ Render status cards
+          const statusListContainer = document.querySelector(".card-body");
+          statusListContainer.innerHTML = "";
+
+          results.forEach(({ request, activity }) => {
+            const actName = activity?.act_name || request.act_name || "กิจกรรม";
+            const dateText = activity?.start_date
+              ? new Date(activity.start_date).toLocaleDateString("th-TH")
+              : request.request_date
+              ? new Date(request.request_date).toLocaleDateString("th-TH")
+              : "";
+            const statusKey = (request.status || "").toLowerCase();
+            const displayStatus = statusTextMap[statusKey] || "ไม่ระบุสถานะ";
+
+            // Create card
+            const statusItem = document.createElement("div");
+            statusItem.className = "activity-card card mb-3";
+            statusItem.innerHTML = `
+          <div class="card-body d-flex justify-content-between align-items-center">
+            <span class="fw-medium" style="font-size: 1.1rem">${actName}</span>
+            <div class="d-flex align-items-center">
+              <span class="me-3 text-muted" style="font-size: 1.1rem">${dateText}</span>
+              <span class="status ${statusKey}" style="font-size: 1rem">${displayStatus}</span>
+            </div>
+          </div>
+        `;
+            statusListContainer.appendChild(statusItem);
+          });
+        } catch (err) {
+          console.error("Status page init error:", err);
+          document.querySelector(".card-body").innerHTML =
+            '<div class="text-danger small">เกิดข้อผิดพลาดขณะโหลดสถานะ โปรดลองใหม่</div>';
+        }
+      })();
+    </script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

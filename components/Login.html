@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="../src/Picture/favicon.png"
+      sizes="64x64"
+    />
+    <link rel="shortcut icon" href="../src/Picture/favicon.png" />
+    <link rel="apple-touch-icon" href="../src/Picture/favicon.png" />
+    
+    <!-- Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../src/style/Login.css" />
+  </head>
+  <body>
+    <div
+      class="main-container d-flex flex-column justify-content-center align-items-center"
+    >
+      <div id="alert-container" class="alert-container"></div>
+
+      <!-- Login Box -->
+      <div class="login-box p-5">
+        <h2 class="text-center">ยินดีต้อนรับกลับ!</h2>
+
+        <div class="form-area">
+          <form>
+            <!-- Email -->
+            <div class="form-floating mb-3">
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+                placeholder="Enter Email"
+                required
+              />
+              <label for="email">อีเมล</label>
+            </div>
+
+            <!-- Password -->
+            <div class="form-floating mb-4">
+              <input
+                type="password"
+                class="form-control"
+                id="password"
+                name="password"
+                placeholder="Enter Password"
+                required
+              />
+              <label for="password">รหัสผ่าน</label>
+            </div>
+
+            <!-- Button -->
+            <div class="d-flex justify-content-center">
+              <button type="submit" class="btn btn-login">เข้าสู่ระบบ</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      document.querySelector("form").addEventListener("submit", handleLogin);
+      let student_id = null;
+
+      function showAlert(message, type = "danger", role) {
+        const container = document.getElementById("alert-container");
+
+        // 🔹 [แก้] เปลี่ยนดีไซน์ให้ progress bar เป็นแถบเล็กด้านล่าง
+        const alert = document.createElement("div");
+        alert.className = `custom-toast border-start border-4 border-${type}`;
+        alert.innerHTML = `
+        <div class="toast-header">
+          <strong class="me-auto text-${type}">${message}</strong>
+          <button type="button" class="btn-close ms-2 mb-1" aria-label="Close"></button>
+        </div>
+        <div class="toast-progress bg-${type}"></div>  <!-- 🔹 เพิ่มแถบเล็กใต้กล่อง -->
+      `;
+
+        container.appendChild(alert);
+
+        // ปุ่มปิด toast
+        alert
+          .querySelector(".btn-close")
+          .addEventListener("click", () => alert.remove());
+
+        // ให้ progress bar ค่อยๆ ลด
+        setTimeout(() => {
+          alert.querySelector(".toast-progress").style.width = "0%";
+        }, 100);
+
+        // ให้ toast หายไปอัตโนมัติ
+        setTimeout(() => {
+          alert.style.opacity = "0";
+          setTimeout(() => alert.remove(), 500);
+          if (type === "success" && role === "student") {
+            window.location.href = `/HomePage.html?id=${encodeURIComponent(
+              student_id
+            )}`;
+          } else if (type === "success" && role === "admin") {
+            window.location.href = `/home_admin.html`;
+          }
+        }, 3000);
+      }
+
+      function handleLogin() {
+        event.preventDefault(); // Prevent form from submitting and refreshing the page
+
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
+
+        if ((password === "") | (email === "")) {
+          showAlert("กรุณากรอกอีเมลและรหัสผ่านให้ครบถ้วน", "notice");
+          return;
+        } else {
+          fetch(
+            "/api/login/:email/:password"
+              .replace(":email", email)
+              .replace(":password", password)
+          )
+            .then((response) => response.json())
+            .then((data) => {
+              console.log(data);
+
+              const isUser = data.user !== null && data.user !== undefined;
+              const isAdmin = data.admin !== null && data.admin !== undefined;
+
+              console.log("isUser:", isUser);
+              console.log("isAdmin:", isAdmin);
+
+              if (!isUser && !isAdmin) {
+                showAlert("อีเมลยังไม่ได้ลงทะเบียน", "danger");
+                return;
+              } else if (
+                (isUser && !data.passwordMatch) ||
+                (isAdmin && !data.passwordMatch)
+              ) {
+                showAlert("รหัสผ่านหรืออีเมลไม่ถูกต้อง", "danger");
+                return;
+              } else if (
+                (isUser && data.passwordMatch) ||
+                (isAdmin && data.passwordMatch)
+              ) {
+                if (isUser) {
+                  student_id = data.student.student_id;
+                  showAlert("เข้าสู่ระบบสำเร็จ! ✅", "success", "student");
+                } else {
+                  showAlert("เข้าสู่ระบบสำเร็จ! ✅", "success", "admin");
+                }
+              }
+            });
+        }
+      }
+    </script>
+  </body>
+</html>

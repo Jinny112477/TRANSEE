@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Activity Register PDF</title>
+
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="../src/Picture/favicon.png"
+      sizes="64x64"
+    />
+    <link rel="shortcut icon" href="../src/Picture/favicon.png" />
+    <link rel="apple-touch-icon" href="../src/Picture/favicon.png" />
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.38.0/dist/umd/supabase.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 40px;
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+
+      table,
+      th,
+      td {
+        border: 1px solid #999;
+        padding: 8px;
+        text-align: left;
+      }
+
+      button {
+        margin-top: 20px;
+        display: block;
+        padding: 10px 20px;
+        font-size: 16px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #0056b3;
+      }
+
+      @media print {
+        @page {
+          size: A4;
+          margin: 20mm;
+        }
+
+        html,
+        body {
+          width: 210mm;
+          height: 297mm;
+          margin: 0;
+          padding: 0;
+          background: #fff;
+        }
+
+        .container {
+          box-sizing: border-box;
+          width: 245mm;
+          max-width: 245mm;
+          margin: auto;
+          border: none;
+          padding: 0;
+        }
+
+        button {
+          display: none;
+        }
+
+        .student_info-thead,
+        .activity-thead-1 {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+          background-color: #d9d9d9 !important;
+        }
+
+        .activity-thead-2 {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+          background-color: #f0f0f0 !important;
+        }
+      }
+
+      .student_info-thead,
+      .activity-thead-1 {
+        background-color: #d9d9d9;
+      }
+
+      .activity-thead-2 {
+        background-color: #f0f0f0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <!-- Logo Row -->
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 16px;
+        "
+      >
+        <div style="display: flex; align-items: center; gap: 20px">
+          <img
+            src="../src/Picture/TU_Logo.png"
+            alt="TU Logo"
+            style="height: 55px"
+          />
+          <img
+            src="../src/Picture/Logo_TU PINEC.png"
+            alt="TSE Logo"
+            style="height: 58px"
+          />
+        </div>
+        <img
+          src="../src/Picture/Transee_Logo.png"
+          alt="Transee Logo"
+          style="height: 45px"
+        />
+      </div>
+
+      <h1>เอกสารรับรองการเข้าร่วมกิจกรรม</h1>
+
+      <!-- Student Info Table -->
+      <table id="student_info-table">
+        <thead class="student_info-thead">
+          <tr>
+            <th colspan="2" style="text-align: center">ข้อมูลนักศึกษา</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <!-- Activity Table -->
+      <table id="activity-table">
+        <thead class="activity-thead-1">
+          <tr>
+            <th colspan="7" style="text-align: center">ข้อมูลกิจกรรม</th>
+          </tr>
+        </thead>
+        <thead class="activity-thead-2">
+          <tr>
+            <th style="text-align: center">ลำดับ</th>
+            <th style="text-align: center">ชื่อกิจกรรม</th>
+            <th style="text-align: center">ประเภทกิจกรรม</th>
+            <th style="text-align: center">บทบาท</th>
+            <th style="text-align: center">วันที่เข้าร่วม</th>
+            <th style="text-align: center">สถานที่</th>
+            <th style="text-align: center">หน่วยงาน</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <button onclick="window.print()">Print to PDF</button>
+    </div>
+
+    <script>
+      // CONFIG
+      const SUPABASE_URL = "https://zaiqcplnlbqssdjdkfhj.supabase.co";
+      const SUPABASE_KEY = "YOUR_KEY_HERE";
+      const hasSupabaseKey = SUPABASE_KEY && SUPABASE_KEY !== "YOUR_KEY_HERE";
+      const supabase =
+        window.supabase && hasSupabaseKey
+          ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+          : null;
+
+      function setNote(msg, isError = false) {
+        let n = document.getElementById("__debugNote");
+        if (!n) {
+          n = document.createElement("div");
+          n.id = "__debugNote";
+          n.style.marginTop = "8px";
+          n.style.fontSize = "0.95rem";
+          document.querySelector(".container").appendChild(n);
+        }
+        n.style.color = isError ? "#c33" : "#333";
+        n.textContent = msg;
+        console.log(msg);
+      }
+
+      function toBuddhistYear(dateStr) {
+        if (!dateStr) return "-";
+        const [year, month, day] = dateStr.split("-");
+        const beYear = parseInt(year) + 543;
+        return `${day}-${month}-${beYear}`; // DD-MM-YYYY
+      }
+
+      async function fetchStudentWithServer() {
+        try {
+          const resp = await fetch("/api/student_info/me");
+          if (!resp.ok) throw new Error("no-session");
+          return await resp.json();
+        } catch (e) {
+          console.warn("Server /api/student_info/me failed:", e);
+          return null;
+        }
+      }
+
+      async function fetchActivityWithServer(id) {
+        try {
+          const resp = await fetch(`/api/activity/${encodeURIComponent(id)}`);
+          if (!resp.ok) {
+            console.warn(
+              "Server activity fetch failed for id",
+              id,
+              resp.status
+            );
+            return null;
+          }
+          return await resp.json();
+        } catch (e) {
+          console.warn("Server activity fetch exception for id", id, e);
+          return null;
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        let student = await fetchStudentWithServer();
+
+        if (!student) {
+          setNote("Student not logged in or session expired.", true);
+          document.querySelector("#student_info-table tbody").innerHTML =
+            '<tr><td colspan="2" style="text-align:center;color:#c33">กรุณาเข้าสู่ระบบก่อน</td></tr>';
+          return;
+        }
+
+        const pronounsMap = { Mr: "นาย", Miss: "นางสาว", Mrs: "นาง" };
+        const thaiPron =
+          pronounsMap[student.pronouns] || student.pronouns || "";
+
+        document.querySelector("#student_info-table tbody").innerHTML = `
+    <tr><td>ชื่อ-นามสกุล</td><td>${thaiPron} ${student.full_name || "-"}</td></tr>
+    <tr><td>รหัสนักศึกษา</td><td>${student.student_id || "-"}</td></tr>
+    <tr><td>คณะ</td><td>คณะวิศกรรมศาสตร์</td></tr>
+    <tr><td>หลักสูตร</td><td>${student.faculty || "-"}</td></tr>
+    <tr><td>ปีการศึกษา</td><td>${student.academic_year || "-"}</td></tr>
+  `;
+
+        let selectedActIds = [];
+        try {
+          const res = await fetch("/api/student/selected-activities");
+          if (res.ok) selectedActIds = await res.json();
+        } catch (e) {
+          console.warn("Could not fetch selected activity IDs:", e);
+        }
+
+        if (!Array.isArray(selectedActIds) || selectedActIds.length === 0) {
+          setNote("No selected activities found.", true);
+          document.querySelector("#activity-table tbody").innerHTML =
+            '<tr><td colspan="7" style="text-align:center">ไม่มีกิจกรรมที่เลือก</td></tr>';
+          return;
+        }
+
+        let activities = [];
+        if (supabase) {
+          try {
+            // Add Supabase fetching if you want
+          } catch (e) {
+            console.warn("Supabase activity fetch failed:", e);
+          }
+        }
+
+        if (!activities || activities.length === 0) {
+          const fetched = [];
+          for (const id of selectedActIds) {
+            const a = await fetchActivityWithServer(id);
+            if (a) fetched.push(a);
+          }
+          activities = fetched;
+        }
+
+        const tbody = document.querySelector("#activity-table tbody");
+        tbody.innerHTML = "";
+        if (!activities || activities.length === 0) {
+          tbody.innerHTML =
+            '<tr><td colspan="7" style="text-align:center;color:#c33">ไม่พบกิจกรรมที่เลือกในระบบ</td></tr>';
+          return;
+        }
+
+        fetch("/api/student/roles-for-selected", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ selectedActIds }),
+        })
+          .then((res) => res.json())
+          .then((roleMap) => {
+            tbody.innerHTML = "";
+            selectedActIds.forEach((actId, idx) => {
+              const actIdStr = String(actId);
+              const act = activities.find(
+                (a) => String(a.activity_id || a.act_id || a.id) === actIdStr
+              );
+              if (!act) return;
+
+              const tr = document.createElement("tr");
+              tr.innerHTML = `
+          <td style="text-align:center">${idx + 1}</td>
+          <td style="text-align:center">${act.act_name || "-"}</td>
+          <td style="text-align:center">${act.act_type || "-"}</td>
+          <td style="text-align:center">${roleMap[actIdStr] || "?"}</td>
+          <td style="text-align:center">${toBuddhistYear(act.start_date)}</td>
+          <td style="text-align:center">${act.place || "-"}</td>
+          <td style="text-align:center">${act.provider_name || "-"}</td>
+        `;
+              tbody.appendChild(tr);
+            });
+          })
+          .catch((err) => console.error("Error fetching roles:", err));
+      });
+    </script>
+  </body>
+</html>

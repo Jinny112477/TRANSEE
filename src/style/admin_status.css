@@ -1,0 +1,135 @@
+body {
+  background: url('../Picture/Main_BG.png') no-repeat center top;
+  background-size: cover;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+}
+
+* {
+  font-family: "Prompt", sans-serif !important;
+}
+
+.container {
+  width: 900px;
+  height: 500px;             /* กำหนดความสูงแน่นอน */
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  padding: 30px 40px;
+  margin-top: 180px;
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.bi-house-fill{
+  font-size: 40px;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.bi-house-fill:hover {
+  transform: scale(1.15);
+  color: #7e1425; /* สีแดงเข้มตอน hover */
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.header h2 {
+  font-size: 35px;
+  font-weight: bold;
+}
+
+.add-btn {
+  background-color: #b22222;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.add-btn i {
+  margin-left: 6px;
+}
+
+.add-btn:hover {
+  background-color: #8b0000;
+}
+
+/* การ์ดกิจกรรม */
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  overflow-y: auto;           /* ให้ scroll */
+  padding-right: 10px;
+  flex: 1;                    /* ให้เต็มความสูง container */
+}
+
+/* การ์ดแต่ละใบ */
+.activity-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 2px solid #5b5959;
+  border-radius: 14px;
+  padding: 20px 25px;
+  background: #fff;
+  transition: all 0.25s ease;
+}
+
+.activity-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.activity-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: #000;
+}
+
+.activity-info {
+  font-size: 15px;
+  color: #333;
+}
+
+.activity-info i {
+  margin-right: 8px;
+  color: #000;
+}
+
+.right {
+  text-align: right;
+}
+
+.count-label {
+  font-size: 14px;
+  color: #333;
+}
+
+.count-number {
+  font-size: 40px;
+  font-weight: 800;
+  color: #b22222;
+  margin-top: 2px;
+}

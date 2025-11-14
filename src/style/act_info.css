@@ -1,0 +1,217 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: "Prompt", sans-serif;
+  background: url('../Picture/Activity_Info.png') no-repeat center top;
+  background-size: cover;
+}
+
+.top-space { height: 150px; }
+
+.banner-box {
+  max-width: 835px;
+  margin: 0 auto 20px;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.banner-box img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+.bi-arrow-left{
+  font-size: 40px;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.bi-arrow-left:hover {
+  transform: scale(1.15);
+  color: #7e1425; /* สีแดงเข้มตอน hover */
+}
+
+.activity-box, .form-box {
+  max-width: 835px;
+  margin: 20px auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  overflow: hidden; 
+}
+
+.activity-detail {
+  white-space: pre-wrap;      /* Preserves whitespace and line breaks */
+  word-wrap: break-word;      /* Breaks long words to prevent overflow */
+  overflow-wrap: break-word;  /* Modern version of word-wrap */
+  max-width: 100%;           /* Ensures text stays within container */
+  padding: 0 15px;          /* Optional: adds some padding */
+}
+
+.activity-box .title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin: 15px 0 10px;
+  display: flex;
+  align-items: center;
+}
+.subtitle::after {
+  content: "";
+  flex: 1;
+  height: 2px;
+  background: #000;
+  margin-left: 10px;
+}
+
+.activity-list { list-style: none; padding: 0; margin: 0 0 15px; }
+.activity-list li { margin: 8px 0; font-size: 16px; }
+.activity-list i { margin-right: 8px; color: #b22222; }
+
+.activity-detail { text-align: justify; line-height: 1.6; }
+
+/* form style */
+.form-row { display: flex; gap: 10px; margin-bottom: 15px; }
+.form-row input { flex: 1; }
+
+/* readonly fields */
+.readonly-field {
+  background-color: #f0f0f0;
+  color: #555;
+  cursor: not-allowed;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+/* Upload */
+.upload-label {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #555;
+  display: block;
+  text-align: left;
+}
+
+.preview {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  min-height: 200px;
+  margin-bottom: 8px;
+}
+.preview img {
+  max-height: 180px;
+  border-radius: 4px;
+}
+
+#uploadBtn {
+  padding: 4px 15px;
+  border-radius: 8px;
+}
+
+/* confirm + submit */
+.confirm-section {
+  max-width: 800px;
+  margin: 10px auto 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.confirm-section input[type="checkbox"] { 
+  transform: scale(1.2); 
+  width: 20px;
+  height: 20px;
+}
+
+
+/* ปุ่ม disabled */
+.submit-btn {
+  background: #ccc;
+  color: #fff;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: not-allowed;
+}
+.submit-btn.enabled {
+  background: #b22222;
+  cursor: pointer;
+}
+.submit-btn.enabled:hover {
+  background: #8b1a1a;
+}
+
+/* invalid */
+.is-invalid {
+  border: 2px solid red !important;
+}
+.is-invalid::placeholder {
+  color: #dc3545;
+  opacity: 1;
+}
+
+/* ✅ จัดปุ่ม + ชื่อไฟล์ กลางจอ */
+.upload-row {
+  display: flex;
+  justify-content: center;   /* กึ่งกลางแนวนอน */
+  align-items: center;
+  gap: 15px;                 /* ระยะห่างระหว่างปุ่มกับชื่อไฟล์ */
+  margin-top: 10px;
+}
+
+/* ✅ ปุ่มอ่อนลง */
+.upload-btn {
+  background-color: #e6e6e6;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 8px 20px;
+  font-size: 15px;
+  transition: 0.3s;
+}
+.upload-btn:hover {
+  background-color: #d9d9d9;
+}
+
+/* ✅ ชื่อไฟล์ */
+.file-name {
+  font-style: italic;
+  color: #666;
+  white-space: nowrap;
+}
+
+/* ปรับ checkbox + warning icon */
+#consentWarning {
+  font-size: 1.2rem;
+  color: #dc3545;
+}
+
+/* สัญลักษณ์เตือนรูป */
+#uploadWarning {
+  font-size: 1.8rem;       /* ✅ ดอกจันใหญ่ขึ้น */
+  color: #dc3545;          /* สีแดง Bootstrap */
+  margin-left: 6px;
+  font-weight: bold;
+  line-height: 1;          /* ลดระยะห่างบรรทัด */
+  vertical-align: middle;  /* ✅ จัดให้อยู่กึ่งกลางประโยค */
+}

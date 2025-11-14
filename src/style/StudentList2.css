@@ -1,0 +1,132 @@
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: url('../Picture/Main_BG.png') no-repeat center top;
+  background-size: cover;
+}
+
+* {
+  font-family: "Prompt", sans-serif !important;
+}
+
+/* ===== ขอบจอบนการ์ด1แปลก, ไม่แสดงเส้นแนวนอน ===== */
+.container {
+  display: flex;
+  flex-direction: column;   /* เรียงแนวตั้ง */
+  align-items: center;      /* จัดให้อยู่กลาง */
+  gap: 20px;                /* ระยะห่างแต่ละการ์ด */
+  padding-top: 120px;        /* ระยะห่างจากขอบบน */
+  padding-bottom: 30px;      /* ระยะห่างจากขอบล่าง */
+}
+
+.bi-arrow-left {
+  font-size: 40px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: tranform 0.2s;
+}
+
+.bi-arrow-left:hover {
+  transform: scale(1.15);
+  color: #7e1425;
+}
+/* ===== การ์ดทั่วไป ===== */
+.custom-card {
+  width: 80%;
+  border-radius: 20px;
+  border: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  background: #fff;
+}
+
+.custom-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* ===== หัวข้อ ===== */
+.title-container {
+  position: relative;
+  width: 100%;
+  margin-bottom: 20px;
+  flex: 2;
+}
+
+.title-container h2 {
+  margin: 20px 0 15px;
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.title-container h2::after {
+  content: "";
+  flex: 1;
+  border-top: 2px solid #000;
+  margin: 0 10px;
+}
+
+/* ===== การ์ด 1 : ข้อมูลนักศึกษา ===== */
+
+
+.student-img {
+  width: 200px;
+  height: 240px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  margin-right: 25px; /* ระยะห่างระหว่างรูปกับข้อความ */
+}
+
+.student-name {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.info-label {
+  font-size: 1.1rem;
+  color: gray;
+  margin-bottom: 4px;
+}
+
+.info-value {
+  font-size: 15px;
+  color: #000;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+/* ===== การ์ด 2 : ข้อมูลการศึกษา ===== */
+.education-box {
+  background-color: #d6d6d6;
+  border-radius: 10px;
+  width: 85%; /* กรอบยาวขึ้น */
+}
+
+.faculty {
+  font-size: 15px;
+}
+
+.divider {
+  width: 2px;
+  height: 40px;
+  background-color: #ccc;
+}
+
+/* ===== การ์ด 3 : กิจกรรม ===== */
+.activity-list {
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.activity-item {
+  border: 1px solid #000;
+  border-radius: 10px;
+  padding: 10px 15px;
+  margin-bottom: 15px;
+  background-color: #fff;
+  font-size: 15px;
+}

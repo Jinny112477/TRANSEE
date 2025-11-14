@@ -1,0 +1,196 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: "Prompt", sans-serif;
+  background: url('../Picture/Main_BG.png') no-repeat center top;
+  background-size: cover;
+}
+
+.top-space { height: 80px; }
+
+.form-box {
+  max-width: 835px;
+  margin: 0px auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.bi-arrow-left{
+  font-size: 40px;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.bi-arrow-left:hover {
+  transform: scale(1.15);
+  color: #7e1425; /* สีแดงเข้มตอน hover */
+}
+
+.title-container h2 {
+  margin: 20px 0 15px;
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.title-container h2::after {
+  content: "";
+  flex: 1;
+  border-top: 2px solid #000;
+  margin: 0 10px;
+}
+
+.form-row { display: flex; gap: 10px; margin-bottom: 15px; }
+.form-row input { flex: 1; }
+
+.info-fields {
+    flex: 1;
+}
+
+.form-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.form-group input,
+.form-group select {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #000000;
+    border-radius: 12px;
+
+}
+
+.form-group .form-floating {
+    margin-bottom: 0 !important;
+}
+
+.form-floating {
+    flex-basis: 50%;
+    width: 100%;
+    height: 60px;
+}
+
+.form-floating input {
+    border: 1px solid rgb(0, 0, 0);
+    border-radius: 12px;
+    font-size: 16px;
+    padding: 12px;
+    width: 100%;
+    margin: 0;
+}
+
+.form-floating label {
+    color: rgb(104, 96, 96); 
+}
+
+#actInfo {
+  height: 150px !important;     /* ✅ ความสูงมากขึ้น */
+  resize: none;                 /* ไม่ให้ลากขยายเอง */
+  border: 1px solid #000;
+  border-radius: 12px;
+  font-size: 16px;
+  padding: 12px;
+}
+
+/* upload style */
+.upload-label {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #555;
+  display: block;
+  text-align: left;
+}
+
+.preview {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  min-height: 200px;
+  margin-bottom: 8px;
+}
+.preview img {
+  max-height: 180px;
+  border-radius: 4px;
+}
+
+#uploadBtn {
+  padding: 4px 15px;
+  border-radius: 8px;
+}
+
+.upload-btn {
+  background-color: #e6e6e6;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 8px 20px;
+  font-size: 15px;
+  transition: 0.3s;
+}
+.upload-btn:hover {
+  background-color: #d9d9d9;
+}
+
+.file-name {
+  font-style: italic;
+  color: #666;
+  white-space: nowrap;
+}
+
+#uploadWarning {
+  font-size: 1.8rem;       /* ✅ ดอกจันใหญ่ขึ้น */
+  color: #dc3545;          /* สีแดง Bootstrap */
+  margin-left: 6px;
+  font-weight: bold;
+  line-height: 1;          /* ลดระยะห่างบรรทัด */
+  vertical-align: middle;  /* ✅ จัดให้อยู่กึ่งกลางประโยค */
+}
+
+/* confirm + submit */
+.confirm-section {
+  max-width: 800px;
+  margin: 10px auto 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ปุ่ม disabled */
+.submit-btn {
+  background: #ccc;
+  color: #fff;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: not-allowed;
+}
+.submit-btn.enabled {
+  background: #b22222;
+  cursor: pointer;
+}
+.submit-btn.enabled:hover {
+  background: #8b1a1a;
+}
+
+/* invalid */
+.is-invalid {
+  border: 2px solid red !important;
+}
+.is-invalid::placeholder {
+  color: #dc3545;
+  opacity: 1;
+}

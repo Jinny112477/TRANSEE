@@ -1,0 +1,56 @@
+/* ตั้งค่าพื้นฐาน */
+body {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: url("../Picture/Main_BG.png") no-repeat center top;
+  background-size: cover;
+}
+
+* {
+  font-family: "Prompt", sans-serif !important;
+}
+
+/* container ครอบปุ่ม */
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* ให้อยู่ตรงกลางแนวตั้ง */
+  align-items: center;
+  height: 400px;
+  gap: 40px; /* ระยะห่างระหว่างปุ่ม ปรับเองได้ */
+}
+
+.bi-box-arrow-left{
+  font-size: 40px;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.bi-box-arrow-left:hover {
+  transform: scale(1.15);
+  color: #7e1425; /* สีแดงเข้มตอน hover */
+}
+
+/* ปุ่ม */
+.menu-btn {
+  background-color: #a72828;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  width: 500px;   /* ทุกปุ่มยาวเท่ากัน */
+  text-align: center;
+  padding: 30px 0px;  /* ปรับขนาดได้เอง */
+  font-size: 22px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* hover */
+.menu-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}

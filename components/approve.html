@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Transee</title>
+
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="../src/Picture/favicon.png"
+      sizes="64x64"
+    />
+    <link rel="shortcut icon" href="../src/Picture/favicon.png" />
+    <link rel="apple-touch-icon" href="../src/Picture/favicon.png" />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../src/style/approve.css" />
+  </head>
+
+  <body>
+    <!-- 🔙 Back Button -->
+    <div style="position: absolute; top: 30px; left: 30px; z-index: 1000">
+      <i id="backButton" class="bi bi-arrow-left" style="cursor: pointer"></i>
+    </div>
+
+    <!-- Logo -->
+    <div style="position: absolute; top: 30px; right: 30px; z-index: 1000">
+      <img
+        src="../src/Picture/Logo_TU_PINE.png"
+        alt="TSE white Logo"
+        style="height: 120px"
+      />
+    </div>
+
+    <div class="top-space"></div>
+
+    <!-- Banner -->
+    <div class="banner-box">
+      <img id="banner" src="../src/Picture/banner.png" alt="banner" />
+    </div>
+
+    <!-- Activity Box -->
+    <section class="activity-box">
+      <h1 class="title" id="title"></h1>
+      <ul class="activity-list">
+        <li><i class="bi bi-clock" id="hour"></i></li>
+        <li><i class="bi bi-people-fill" id="provider"></i></li>
+        <li><i class="bi bi-list-task" id="type"></i></li>
+        <li><i class="bi bi-calendar-event" id="date"></i></li>
+        <li><i class="bi bi-geo-alt-fill" id="place"></i></li>
+      </ul>
+
+      <h4 class="subtitle">รายละเอียดกิจกรรม</h4>
+      <p class="activity-detail" id="detail"></p>
+    </section>
+
+    <!-- Student Box -->
+    <section class="form-box">
+      <h3 class="form-title">การเข้าร่วมกิจกรรม</h3>
+
+      <div class="form-row">
+        <input
+          type="text"
+          id="std_name"
+          class="form-control readonly-field"
+          readonly
+        />
+        <input
+          type="text"
+          id="std_id"
+          class="form-control readonly-field"
+          readonly
+        />
+      </div>
+
+      <div class="mb-3">
+        <input
+          type="text"
+          id="role"
+          class="form-control readonly-field"
+          readonly
+        />
+      </div>
+
+      <div class="file-preview text-center">
+        <label class="upload-label mb-2">รูปภาพหลักฐานการเข้าร่วมกิจกรรม</label>
+        <div class="preview" id="previewContainer">
+          <img id="img" src="pic/sample.jpg" alt="ภาพหลักฐาน" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Approve / Reject -->
+    <div class="approve-section">
+      <button class="btn btn-success btn-lg px-5" id="approveBtn">
+        อนุมัติ
+      </button>
+      <button class="btn btn-danger btn-lg px-5" id="rejectBtn">
+        ไม่อนุมัติ
+      </button>
+    </div>
+
+    <!-- Confirm Modal -->
+    <div class="modal fade" id="resultModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-top">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">System says</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body text-left">
+            <p id="modalMessage" class="fs-5"></p>
+          </div>
+          <div class="modal-footer justify-content-center">
+            <button
+              type="button"
+              class="btn btn-confirm"
+              id="confirmBtn"
+              data-bs-dismiss="modal"
+            >
+              ยืนยัน
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUCCESS MODAL -->
+    <div class="modal fade modal-top" id="successModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header bg-success text-white">
+            <h5 class="modal-title">System.says</h5>
+          </div>
+          <div class="modal-body">
+            <p id="successMessage" class="fs-5"></p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ERROR MODAL -->
+    <div class="modal fade modal-top" id="errorModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header bg-danger text-white">
+            <h5 class="modal-title">System.says</h5>
+          </div>
+          <div class="modal-body text-left">
+            <p id="errorMessage" class="fs-5"></p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.38.0/dist/umd/supabase.min.js"></script>
+    <script src="../components/navigation.js"></script>
+
+    <script>
+      const approveBtn = document.getElementById("approveBtn");
+      const rejectBtn = document.getElementById("rejectBtn");
+      const confirmBtn = document.getElementById("confirmBtn");
+      const modal = new bootstrap.Modal(document.getElementById("resultModal"));
+      const modalMessage = document.getElementById("modalMessage");
+
+      let pendingAction = null;
+
+      // === SUCCESS + ERROR ===
+      function showSuccess(msg) {
+        document.getElementById("successMessage").textContent = msg;
+        new bootstrap.Modal(document.getElementById("successModal")).show();
+      }
+
+      function showError(msg) {
+        document.getElementById("errorMessage").textContent = msg;
+        new bootstrap.Modal(document.getElementById("errorModal")).show();
+      }
+
+      // Load Data
+      fetch(
+        "/api/approve_page/:id".replace(
+          ":id",
+          new URLSearchParams(window.location.search).get("req_id")
+        )
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          document.getElementById("banner").src =
+            data.add_activity.act_img || "../src/Picture/banner.png";
+          document.getElementById("title").textContent =
+            " " + data.add_activity.act_name;
+          document.getElementById("hour").textContent =
+            " จำนวนชั่วโมงกิจกรรม " + data.add_activity.act_hour + " ชั่วโมง";
+          document.getElementById("provider").textContent =
+            " " + data.add_activity.provider_name;
+          document.getElementById("type").textContent =
+            " " + data.add_activity.act_type;
+          document.getElementById("date").textContent =
+            " " + data.add_activity.start_date;
+          document.getElementById("place").textContent =
+            " " + data.add_activity.place;
+          document.getElementById("detail").textContent =
+            " " + data.add_activity.description;
+          document.getElementById("std_id").value = " " + data.student_id;
+          document.getElementById("std_name").value =
+            " " + data.student_info.full_name;
+          document.getElementById("role").value = " " + data.role;
+          document.getElementById("img").src = data.image;
+        });
+
+      // Approve
+      approveBtn.addEventListener("click", () => {
+        modalMessage.textContent = "✅ ต้องการอนุมัติกิจกรรมนี้ใช่หรือไม่?";
+        pendingAction = "approve";
+        modal.show();
+      });
+
+      // Reject
+      rejectBtn.addEventListener("click", () => {
+        modalMessage.textContent = "❌ ต้องการไม่อนุมัติกิจกรรมนี้ใช่หรือไม่?";
+        pendingAction = "reject";
+        modal.show();
+      });
+
+      // Confirm
+      confirmBtn.addEventListener("click", () => {
+        const reqId = new URLSearchParams(window.location.search).get("req_id");
+
+        if (pendingAction === "approve") {
+          fetch(`/api/update_status/${reqId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ status: "approved" }),
+          });
+          showSuccess("✅ กิจกรรมได้รับการอนุมัติเรียบร้อยแล้ว");
+        }
+
+        if (pendingAction === "reject") {
+          fetch(`/api/update_status/${reqId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ status: "rejected" }),
+          });
+          showError("❌ กิจกรรมไม่รับการอนุมัติเรียบร้อยแล้ว");
+        }
+
+        pendingAction = null;
+
+        // ย้ายหน้าออกหลัง 1.3 วินาที
+        setTimeout(() => {
+          window.location.href = "admin_status.html";
+        }, 1300);
+      });
+    </script>
+  </body>
+</html>

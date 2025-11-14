@@ -1,0 +1,80 @@
+body {
+  background: url('../Picture/Main_BG.png') no-repeat center top;
+  background-size: cover;
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+* {
+  font-family: "Prompt", sans-serif !important;
+}
+
+/* 🟦 กรอบใหญ่ */
+.container {
+  width: 650px;
+  height: 450px;
+  background: #fff;
+  padding: 30px 40px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  display: flex;
+  flex-direction: column;
+  margin-top: 210px; /* ✅ เพิ่มระยะห่างจากบน */
+}
+
+.bi-house-fill{
+  font-size: 40px;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.bi-house-fill:hover {
+  transform: scale(1.15);
+  color: #7e1425; /* สีแดงเข้มตอน hover */
+}
+
+/* 🟨 หัวข้อชิดซ้าย */
+.header {
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+/* 🟥 ปุ่มเรียงแนวตั้ง */
+.year-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  flex-grow: 1;
+  justify-content: center;
+}
+
+.year-btn {
+  background: #c62828;
+  color: #fff;
+  border: none;
+  padding: 25px 60px;
+  font-size: 1.3rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+}
+
+.year-btn:hover {
+  background: #a71d1d;
+  transform: translateY(-4px);
+  box-shadow: 0 6px 10px rgba(0,0,0,0.2);
+}

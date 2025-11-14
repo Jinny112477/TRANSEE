@@ -1,0 +1,142 @@
+/* จัดกลางจอ */
+body {
+  background: url('../Picture/Main_BG.png') no-repeat center top;
+  background-size: cover;
+  font-family: "Prompt", sans-serif;
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* กล่องหลัก */
+.container-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 10px;
+  
+}
+
+.bi-house-fill{
+  font-size: 40px;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.bi-house-fill:hover {
+  transform: scale(1.15);
+  color: #7e1425; /* สีแดงเข้มตอน hover */
+}
+
+.main-card {
+  border-radius: 25px;
+  width: 240%;  /* ขยายความกว้างของการ์ด */
+  background: #fff;
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  overflow: hidden;
+  margin-top: 90px;
+}
+
+/* Header */
+.card-header {
+  padding: 20px 30px;
+}
+
+/* Body scroll */
+.card-body {
+  max-height: 625px;   /* กำหนดความสูงตายตัว */
+  overflow-y: auto;    /* scroll เมื่อเกิน */
+  padding: 0 20px 10px 20px;
+}
+
+/* การ์ดกิจกรรม */
+.activity-card {
+  border-radius: 12px;
+  border: 1px solid #4d4d4d;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 19px;
+  margin-bottom: 10px;
+}
+
+/* Checkbox ในกิจกรรม */
+.activity-card input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: #28a745;
+}
+
+/* Checkbox ยืนยัน */
+.confirm-checkbox {
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+}
+.confirm-checkbox input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  accent-color: #3550b3;
+}
+
+.confirm-checkbox label {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+/* ปุ่ม */
+.btn-transcript {
+  background-color: #dc3545;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.1rem;
+  width: 200px;
+  margin: 10px auto 0;
+  display: block;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  transition: background-color 0.3s ease;
+}
+
+/* hover เฉพาะตอน enable */
+.btn-transcript:not(:disabled):hover {
+  background-color: #c82333;
+  cursor: pointer;
+}
+
+/* ปุ่ม disable */
+.btn-transcript:disabled {
+  background-color: #aaa !important;
+  cursor: not-allowed;
+}
+
+/* ไอคอนเตือน */
+#confirmWarning {
+  font-size: 1.2rem;
+  color: #dc3545;
+  vertical-align: middle;
+  cursor: pointer;
+  visibility: hidden; /* ซ่อนแต่ tooltip ทำงานได้ */
+}
+
+#confirmWarning.show-warning {
+  visibility: visible;
+}
+
+/* Tooltip ของ Bootstrap */
+.tooltip {
+  max-width: 300px !important;   /* กำหนดความกว้างสูงสุดที่ต้องการ */
+}
+
+.tooltip-inner {
+  white-space: normal;           /* ให้ข้อความ wrap เป็นหลายบรรทัด */
+  text-align: left;              /* ชิดซ้าย */
+  word-wrap: break-word;         /* ตัดคำถ้าคำยาวเกิน */
+  padding: 7px 12px;             /* เพิ่ม padding ให้สวย */
+  font-size: 0.9rem;             /* ปรับขนาดตัวอักษร */
+}

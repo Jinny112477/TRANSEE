@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HomePage</title>
+
+  <!-- Favicon -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="../src/Picture/favicon.png"
+      sizes="64x64"
+    />
+    <link rel="shortcut icon" href="../src/Picture/favicon.png" />
+    <link rel="apple-touch-icon" href="../src/Picture/favicon.png" />
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../src/style/HomePage.css">
+</head>
+
+<body>
+<div
+  style="
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    z-index: 1000;
+  "
+>
+  <img
+    src="../src/Picture/Logo_TU_PINE.png"
+    alt="TSE white Logo"
+    style="
+      height: 120px;
+      object-fit: contain;
+    "
+  />
+</div>
+
+<!-- ปุ่มไอคอน Home -->
+<div
+  style="
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    z-index: 1000;
+  "
+>
+  <i
+    class="bi bi-box-arrow-left"
+    onclick="window.location.href='Start.html'"
+  ></i>
+</div>
+
+  <div class="container d-flex flex-column align-items-center gap-3">
+
+    <!-- การ์ด Student Info -->
+    <div class="card profile-card shadow-lg">
+      <div class="card-body d-flex align-items-center position-relative">
+        <img id="profileImg" src="../src/Picture/Profile photo.png" alt="Profile" class="profile-img me-4">
+
+        <div>
+          <h2 id="fullname" class="fw-bold">ชื่อจริง-นามสกุล</h2>
+          <h5 id="faculty" style="padding-left: 16px;">สาขาวิชา</h5>
+          <h5 id="student_id" class="student-id-bg">รหัสนักศึกษา xxxxxxxxxx</h5>
+        </div>
+        <i class="bi bi-pencil-square edit-icon" onclick="window.location.href='EditStudentInfo.html'"></i> <!-- เชื่อมหน้ากับปุ่มนี้ -->
+      </div>
+    </div>
+
+    <!-- Data Sample -->
+
+    <!-- การ์ด activity 🔴โชว์แค่กิจกรรมที่ใกล้กับปัจจุบันมากที่สุด (แค่ 1 การ์ดเท่านั้น)-->
+
+
+    <div id="cardActivity" class="activity-list ">
+      <!-- dynamically generated activity cards will be appended here -->
+    </div>
+    
+    <!-- <div onclick="window.location.href='Activity.html'" class="activity-card p-3 d-flex align-items-center" data-month="1" data-year="2568">
+        <div class="folder-container">
+            <div class="date-text">29</div>
+        </div>
+        <div class="ms-3">
+            <div class="fw-bold fs-5">JANUARY</div>
+            <div class="text-muted">2025</div>
+        </div>
+        <div class="activity-info ms-auto">
+            <h5 class="fw-bold mb-2">กิจกรรมรับน้อง</h5>
+            <p class="mb-1"><small>13:30 | คณะวิศวกรรมศาสตร์</small></p>
+        </div> -->
+        
+
+    <!-- การ์ด สถานะส่งคำขอ -->
+    <div onclick="window.location.href='status.html'" class="card status-card shadow-lg hover-card">
+      <div class="card-body">
+        <h5 class="fw-bold mb-3">สถานะส่งคำขอ</h5>
+        <div id="cardStatus" class="status-list" >
+
+          <!-- <div class="status-item d-flex justify-content-between align-items-center mb-2">
+            <span>Software Engineering Camp</span>
+            <div class="d-flex align-items-center">
+              <span class="me-3 text-muted small">30/10/2025</span>
+              <span class="status approved">อนุมัติ</span>
+            </div>
+          </div> -->
+
+
+        </div>
+      </div>
+    </div>
+
+    <!-- การ์ด เลือกกิจกรรมออกใบทรานสคริปต์ -->
+    <div onclick="window.location.href='select_act.html'" class="card transcript-card shadow-lg hover-card">
+      <div class="card-body">
+        <h5 class="fw-bold mb-3">เลือกกิจกรรมออกใบทรานสคริปต์</h5>
+        <div class="transcript-list">
+
+          <!--<div class="transcript-item d-flex justify-content-between align-items-center mb-2">
+            <span>Software Engineering Camp</span>
+            <div class="d-flex align-items-center">
+              <span class="me-3 text-muted small">30/10/2025</span>
+              <input type="checkbox" disabled>
+            </div>
+          </div>-->
+
+    </div>
+  </div>
+
+    <script>
+(async function init() {
+  try {
+    // -------------------------
+    // 1️⃣ Fetch current student info
+    // -------------------------
+    let studentId = null;
+    let meData = null;
+
+    try {
+      const meResp = await fetch('/api/student_info/me');
+      if (meResp.ok) {
+        meData = await meResp.json();
+        studentId = meData.student_id || null;
+
+        // Update profile card
+        document.getElementById('fullname').textContent = meData.full_name || 'ชื่อจริง-นามสกุล';
+        document.getElementById('faculty').textContent = meData.faculty || 'สาขาวิชา';
+        document.getElementById('student_id').textContent = 'รหัสนักศึกษา ' + (meData.student_id || 'xxxxxxxxxx');
+        if (meData.img) document.getElementById('profileImg').src = meData.img;
+      } else {
+        console.warn('/api/student_info/me returned', meResp.status);
+      }
+    } catch (err) {
+      console.error('Error fetching student info:', err);
+    }
+
+    // -------------------------
+    // 2️⃣ Fetch nearest activity
+    // -------------------------
+    try {
+      const resp = await fetch('/api/earliestActivity');
+      if (!resp.ok) throw new Error('earliestActivity fetch failed: ' + resp.status);
+      const activities = await resp.json();
+
+      const activityList = document.getElementById('cardActivity');
+      activityList.innerHTML = '';
+
+      activities.forEach(activity => {
+        const d = new Date(activity.start_date);
+        const date_day = d.getDate();
+        const data_month = d.getMonth() + 1;
+        const data_year = d.getFullYear() + 543; // Buddhist year
+        const month_name = d.toLocaleString('en-US', { month: 'long' }).toUpperCase();
+
+        const cardActivity = document.createElement('div');
+        cardActivity.className = 'activity-card p-3 d-flex align-items-center';
+        cardActivity.setAttribute('data-month', data_month);
+        cardActivity.setAttribute('data-year', data_year);
+        cardActivity.onclick = () => window.location.href = 'Activity.html';
+
+        cardActivity.innerHTML = `
+          <div class="folder-container"><div class="date-text">${date_day}</div></div>
+          <div class="ms-3">
+            <div class="fw-bold fs-5">${month_name}</div>
+            <div class="text-muted">${data_year}</div>
+          </div>
+          <div class="activity-info ms-auto">
+            <h5 class="fw-bold mb-2" style="font-size:1.1rem;">${activity.act_name}</h5>
+            <p class="mb-1"><small style="font-size:1rem;">${activity.place}</small></p>
+          </div>
+        `;
+        activityList.appendChild(cardActivity);
+      });
+    } catch (err) {
+      console.error('Error fetching earliest activity:', err);
+    }
+
+    // -------------------------
+    // 3️⃣ Fetch requests & show status in Thai
+    // -------------------------
+    const statusListContainer = document.getElementById('cardStatus');
+
+    if (!studentId) {
+      statusListContainer.innerHTML = '<div class="text-muted" style="font-size:1rem;">ไม่พบข้อมูลนักศึกษา</div>';
+      return;
+    }
+
+    let requests = [];
+    try {
+      const reqResp = await fetch('/api/requests/' + encodeURIComponent(studentId));
+      if (reqResp.ok) requests = await reqResp.json();
+      else throw new Error('Requests fetch failed: ' + reqResp.status);
+    } catch (err) {
+      console.error('Error fetching requests:', err);
+      statusListContainer.innerHTML = '<div class="text-muted" style="font-size:1rem;">ไม่สามารถโหลดสถานะคำขอ</div>';
+      return;
+    }
+
+    if (!Array.isArray(requests) || requests.length === 0) {
+      statusListContainer.innerHTML = '<div class="text-muted" style="font-size:1rem;">ยังไม่มีคำขอ</div>';
+      return;
+    }
+
+    // Fetch activity details for each request
+    const results = await Promise.all(
+      requests.map(r => fetch('/api/activity/' + encodeURIComponent(r.act_id))
+        .then(res => res.ok ? res.json().then(act => ({ request: r, activity: act })) : { request: r, activity: null })
+        .catch(err => ({ request: r, activity: null }))
+      )
+    );
+
+    // Deduplicate by activity
+    const mapByAct = new Map();
+    results.forEach(({ request, activity }) => {
+      const actId = activity?.activity_id ?? request.act_id ?? request.activity_id ?? '';
+      mapByAct.set(String(actId), { request, activity });
+    });
+    const uniqueResults = Array.from(mapByAct.values());
+
+    // Render Status in Thai with color
+    const statusTranslate = (s) => {
+      if (!s) return 'กำลังพิจารณา';
+      const x = String(s).trim().toLowerCase();
+      if (x === 'approved' || x === 'อนุมัติ') return 'อนุมัติ';
+      if (x === 'rejected' || x === 'ไม่อนุมัติ') return 'ไม่อนุมัติ';
+      return 'กำลังพิจารณา';
+    };
+
+    const statusClass = (s) => {
+      if (s === 'อนุมัติ') return 'approved';
+      if (s === 'ไม่อนุมัติ') return 'rejected';
+      return 'pending';
+    };
+
+    statusListContainer.innerHTML = '';
+    uniqueResults.forEach(({ request, activity }) => {
+      const statusItem = document.createElement('div');
+      statusItem.className = 'status-item d-flex justify-content-between align-items-center mb-2';
+
+      const actName = activity?.act_name || request.act_name || 'กิจกรรม';
+      const dateText = activity?.start_date
+        ? new Date(activity.start_date).toLocaleDateString('th-TH')
+        : (request.request_date ? new Date(request.request_date).toLocaleDateString('th-TH') : '');
+      const statusText = statusTranslate(request.status);
+
+      statusItem.innerHTML = `
+        <span>${actName}</span>
+        <div class="d-flex align-items-center">
+          <span class="me-3 text-muted small">${dateText}</span>
+          <span class="status ${statusClass(statusText)}">${statusText}</span>
+        </div>
+      `;
+      statusListContainer.appendChild(statusItem);
+    });
+
+    // -------------------------
+    // 4️⃣ Render Transcript Section (only approved)
+    // -------------------------
+    const transcriptListContainer = document.querySelector('.transcript-list');
+    if (transcriptListContainer) {
+      transcriptListContainer.innerHTML = '';
+
+      uniqueResults.filter(({ request }) => statusTranslate(request.status) === 'อนุมัติ')
+        .forEach(({ request, activity }) => {
+          const transcriptItem = document.createElement('div');
+          transcriptItem.className = 'transcript-item d-flex justify-content-between align-items-center mb-2';
+
+          const actName = activity?.act_name || request.act_name || 'กิจกรรม';
+          const dateText = activity?.start_date
+            ? new Date(activity.start_date).toLocaleDateString('th-TH')
+            : (request.request_date ? new Date(request.request_date).toLocaleDateString('th-TH') : '');
+
+          transcriptItem.innerHTML = `
+            <span>${actName}</span>
+            <div class="d-flex align-items-center">
+              <span class="me-3 text-muted small">${dateText}</span>
+              <input type="checkbox" checked disabled>
+            </div>
+          `;
+          transcriptListContainer.appendChild(transcriptItem);
+        });
+
+      if (transcriptListContainer.children.length === 0) {
+        transcriptListContainer.innerHTML = '<div class="text-muted small">ยังไม่มีกิจกรรมที่อนุมัติ</div>';
+      }
+    }
+
+  } catch (err) {
+    console.error('HomePage init error:', err);
+  }
+})();
+</script>
+</body>
+</html>

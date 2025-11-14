@@ -1,0 +1,185 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: "Prompt", sans-serif;
+  background: url('../Picture/Main_BG.png') no-repeat center top;
+  background-size: cover;
+}
+
+.top-space {
+  height: 120px;
+}
+
+.bi-arrow-left{
+  font-size: 40px;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.bi-arrow-left:hover {
+  transform: scale(1.15);
+  color: #7e1425; /* สีแดงเข้มตอน hover */
+}
+
+/* แบนเนอร์ */
+.banner-box {
+  max-width: 835px;
+  margin: 0 auto 20px;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.banner-box img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+/* กล่องกิจกรรม */
+.activity-box, .form-box {
+  max-width: 835px;
+  margin: 20px auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  overflow: hidden; 
+}
+
+.activity-detail {
+  white-space: pre-wrap;      /* Preserves whitespace and line breaks */
+  word-wrap: break-word;      /* Breaks long words to prevent overflow */
+  overflow-wrap: break-word;  /* Modern version of word-wrap */
+  max-width: 100%;           /* Ensures text stays within container */
+  padding: 0 15px;          /* Optional: adds some padding */
+}
+
+.title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin: 15px 0 10px;
+  display: flex;
+  align-items: center;
+}
+.subtitle::after {
+  content: "";
+  flex: 1;
+  height: 2px;
+  background: #000;
+  margin-left: 10px;
+}
+
+.activity-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 15px;
+}
+.activity-list li {
+  margin: 8px 0;
+  font-size: 16px;
+}
+.activity-list i {
+  margin-right: 8px;
+  color: #b22222;
+}
+.activity-detail {
+  text-align: justify;
+  line-height: 1.6;
+}
+
+/* กล่องฟอร์ม */
+.form-title {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.form-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+.readonly-field {
+  background-color: #f0f0f0;
+  color: #555;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  cursor: not-allowed;
+}
+
+/* กล่องรูป */
+.file-preview {
+  text-align: left;
+}
+.upload-label {
+  font-weight: bold;
+  color: #555;
+}
+.preview {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  background: #fafafa;
+}
+.preview img {
+  max-width: 100%;
+  max-height: 180px;
+  border-radius: 6px;
+}
+
+/* ปุ่มอนุมัติ */
+.approve-section {
+  max-width: 835px;
+  margin: 40px auto 80px;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.btn-success {
+  background-color: #28a745;
+  border: none;
+  transition: 0.3s;
+}
+.btn-success:hover {
+  background-color: #218838;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border: none;
+  transition: 0.3s;
+}
+.btn-danger:hover {
+  background-color: #b02a37;
+}
+
+/* ปุ่มใน modal */
+.btn-confirm {
+  background-color: #e0e0e0;
+  color: #333;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 40px;
+  transition: 0.3s;
+}
+.btn-confirm:hover {
+  background-color: #0d6efd;
+  color: #fff;
+}

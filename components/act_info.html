@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Activity</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="../src/Picture/favicon.png"
+      sizes="64x64"
+    />
+    <link rel="shortcut icon" href="../src/Picture/favicon.png" />
+    <link rel="apple-touch-icon" href="../src/Picture/favicon.png" />
+
+    <!-- Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../src/style/act_info.css" />
+  </head>
+
+  <body>
+    <div style="position: absolute; top: 30px; left: 30px; z-index: 1000">
+      <i
+        class="bi bi-arrow-left"
+        onclick="window.location.href='Activity.html'"
+      ></i>
+    </div>
+    <!-- Logo at top-right -->
+    <div style="position: absolute; top: 30px; right: 30px; z-index: 1000">
+      <img
+        src="../src/Picture/Logo_TU_PINE.png"
+        alt="TSE white Logo"
+        style="height: 120px; object-fit: contain"
+      />
+    </div>
+
+    <div class="top-space"></div>
+
+    <div class="banner-box">
+      <img id="banner" src="../src/Picture/banner.png" alt="banner" />
+    </div>
+
+    <section class="activity-box">
+      <h1 class="title"></h1>
+      <ul class="activity-list">
+        <!-- <li><i class="bi bi-clock"></i> จำนวนชั่วโมงกิจกรรม 8 ชั่วโมง</li>
+        <li>
+          <i class="bi bi-people-fill"></i> คณะกรรมการนักศึกษา คณะวิศวกรรมศาสตร์
+        </li>
+        <li><i class="bi bi-list-task"></i> ประเภทกิจกรรม อื่น ๆ</li>
+        <li><i class="bi bi-calendar-event"></i> 29 ม.ค. 2568</li>
+        <li><i class="bi bi-geo-alt-fill"></i> คณะวิศวกรรมศาสตร์</li> -->
+      </ul>
+      <h4 class="subtitle">รายละเอียดกิจกรรม</h4>
+      <p class="activity-detail">
+        <!-- กิจกรรมรับน้องจัดขึ้นเพื่อสร้างความสัมพันธ์อันดีระหว่างรุ่นพี่และรุ่นน้อง
+        ผ่านกิจกรรมและลายพฤติกรรม รวมถึงทักษะการทำงานเป็นทีม
+        พร้อมทั้งแนะนำประวัติและเอกลักษณ์ของคณะ
+        เพื่อปลูกฝังความสามัคคีและสร้างความทรงจำที่ดีร่วมกัน -->
+      </p>
+    </section>
+
+    <section class="form-box">
+      <h4 class="form-title" style="font-weight: bold">การเข้าร่วมกิจกรรม</h4>
+      <form id="activityForm">
+        <div class="form-row">
+          <input
+            type="text"
+            id="name"
+            class="form-control readonly-field"
+            style="font-size: 1.1rem"
+            value="ชื่อ-นามสกุล"
+            readonly
+          />
+          <input
+            type="text"
+            id="studentId"
+            class="form-control readonly-field"
+            style="font-size: 1.1rem"
+            value="รหัสนักศึกษา"
+            readonly
+          />
+        </div>
+
+        <!-- ช่องกรอกบทบาท -->
+        <div class="mb-3">
+          <input
+            type="text"
+            class="form-control"
+            id="roleInput"
+            style="font-size: 1.1rem"
+            placeholder="บทบาทที่นักศึกษาเข้าร่วม"
+            data-bs-toggle="tooltip"
+            data-bs-placement="right"
+            title="กรุณากรอกบทบาทที่นักศึกษาเข้าร่วม"
+          />
+        </div>
+
+        <!-- อัปโหลดรูป -->
+        <div class="file-upload text-center">
+          <label class="upload-label mb-2">
+            อัปโหลดรูปภาพหลักฐาน 1 รูป (รูปนักศึกษาขณะทำกิจกรรม)
+            <span
+              id="uploadWarning"
+              class="text-danger"
+              data-bs-toggle="tooltip"
+              data-bs-placement="right"
+              title="กรุณาอัปโหลดรูปภาพ (.jpg เท่านั้น)"
+              style="display: none; cursor: pointer"
+            >
+              *
+            </span>
+          </label>
+
+          <div class="preview" id="previewContainer"></div>
+          <div class="upload-row">
+            <button
+              type="button"
+              id="uploadBtn"
+              class="btn upload-btn"
+              style="font-size: 1.1rem"
+            >
+              อัปโหลดรูปภาพ (.jpg)
+            </button>
+            <span id="fileName" class="file-name" style="font-size: 1.2rem"
+              >ยังไม่ได้เลือกไฟล์</span
+            >
+          </div>
+          <input type="file" id="uploadFile" accept="image/*" hidden />
+        </div>
+      </form>
+    </section>
+
+    <div class="confirm-section">
+      <div class="d-flex align-items-center justify-content-center gap-2">
+        <input type="checkbox" id="confirmCheck" />
+        <label for="confirmCheck" style="font-size: 1.2rem"
+          >ยืนยันว่าข้อมูลข้างต้นเป็นความจริง</label
+        >
+        <span
+          id="consentWarning"
+          class="ms-2 text-danger"
+          data-bs-toggle="tooltip"
+          data-bs-placement="right"
+          title="กรุณายืนยันข้อมูลก่อนกดยืนยัน"
+          style="display: none; cursor: pointer"
+        >
+          &#9888;
+        </span>
+      </div>
+
+      <button
+        type="button"
+        id="submitBtn"
+        class="submit-btn"
+        style="font-size: 1.1rem"
+        disabled
+      >
+        ยืนยันข้อมูล
+      </button>
+    </div>
+
+    <!-- ✅ Modal Bootstrap -->
+    <div
+      class="modal fade modal-top"
+      id="successModal"
+      tabindex="-1"
+      aria-labelledby="successModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="successModalLabel">System.says</h5>
+          </div>
+          <div class="modal-body text-left">
+            <p>ยืนยันข้อมูล สำเร็จ!</p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              id="closeModalBtn"
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      let student_unique_id = null;
+
+      fetch("../api/student_info/me")
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Fetched student info:", data);
+          document.getElementById("name").value = data.full_name || "—";
+          document.getElementById("studentId").value = data.student_id || "—";
+          student_unique_id = data.student_id;
+        })
+        .catch((error) => {
+          console.error("Error fetching student info:", error);
+        });
+
+      const activity_unique_id = new URLSearchParams(
+        window.location.search
+      ).get("id");
+      fetch(
+        "../api/activity/:id".replace(
+          ":id",
+          encodeURIComponent(activity_unique_id)
+        )
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Fetched activities:", data);
+          document.getElementById("banner").src = data.act_img
+            ? data.act_img
+            : "../src/Picture/banner.png";
+
+          // safe element selection
+          const titleEl = document.querySelector(".title");
+          const detailEl = document.querySelector(".activity-detail");
+          const listEl = document.querySelector(".activity-list");
+
+          if (!titleEl || !detailEl || !listEl) {
+            console.error("Expected DOM elements not found");
+            return;
+          }
+
+          // helper to format date (fallback if missing)
+          function formatDate(d) {
+            if (!d) return "—";
+            const dt = new Date(d);
+            if (isNaN(dt)) return d;
+            return dt.toLocaleDateString("th-TH", {
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+            });
+          }
+
+          // set title and description
+          titleEl.innerText = data.act_name ?? "—";
+          detailEl.innerText = data.description ?? "—";
+
+          // build list items instead of assuming existing children
+          listEl.innerHTML = `
+            <li style="font-size: 1.1rem;"><i class="bi bi-clock"></i> จำนวนชั่วโมงกิจกรรม ${
+              data.act_hour ?? "—"
+            } ชั่วโมง</li>
+            <li style="font-size: 1.1rem;"><i class="bi bi-people-fill"></i> ${
+              data.provider_name ?? "—"
+            }</li>
+            <li style="font-size: 1.1rem;"><i class="bi bi-list-task"></i> ประเภทกิจกรรม ${
+              data.act_type ?? "—"
+            }</li>
+            <li style="font-size: 1.1rem;"><i class="bi bi-calendar-event"></i> ${formatDate(
+              data.start_date
+            )}</li>
+            <li style="font-size: 1.1rem;"><i class="bi bi-geo-alt-fill"></i> ${
+              data.place ?? "—"
+            }</li>
+          `;
+        })
+        .catch((error) => {
+          console.error("Error fetching activities:", error);
+        });
+      const uploadBtn = document.getElementById("uploadBtn");
+      const uploadInput = document.getElementById("uploadFile");
+      const fileNameLabel = document.getElementById("fileName");
+      const previewContainer = document.getElementById("previewContainer");
+      const confirmCheck = document.getElementById("confirmCheck");
+      const form = document.getElementById("activityForm");
+      const roleInput = document.getElementById("roleInput");
+      const submitBtn = document.getElementById("submitBtn");
+      const consentWarning = document.getElementById("consentWarning");
+      const uploadWarning = document.getElementById("uploadWarning");
+
+      let uploadedFile = null;
+
+      // เปิด tooltip bootstrap
+      const tooltipTriggerList = [].slice.call(
+        document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      );
+      tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+      });
+
+      // เปิดเลือกไฟล์
+      uploadBtn.addEventListener("click", () => uploadInput.click());
+
+      // เลือกไฟล์
+      uploadInput.addEventListener("change", function () {
+        const file = this.files[0];
+        previewContainer.innerHTML = "";
+
+        if (!file) {
+          fileNameLabel.textContent = "ยังไม่ได้เลือกไฟล์";
+          uploadedFile = null;
+          uploadWarning.style.display = "inline"; // ❌ แสดงดอกจัน
+          updateSubmitState();
+          return;
+        }
+
+        const fileExt = file.name.split(".").pop().toLowerCase();
+        if (fileExt !== "jpg" && fileExt !== "jpeg") {
+          showError("กรุณาอัปโหลดไฟล์ .jpg เท่านั้น");
+          this.value = "";
+          fileNameLabel.textContent = "ยังไม่ได้เลือกไฟล์";
+          uploadedFile = null;
+          uploadWarning.style.display = "inline"; // ❌ แสดงดอกจัน
+          updateSubmitState();
+          return;
+        }
+
+        uploadedFile = file;
+        fileNameLabel.textContent = file.name;
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const img = document.createElement("img");
+          img.src = e.target.result;
+          previewContainer.src = e.target.result;
+          previewContainer.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+
+        uploadWarning.style.display = "none"; // ✅ อัปโหลดแล้วซ่อนดอกจัน
+        updateSubmitState();
+      });
+
+      // ตรวจสอบ role
+      function validateRole() {
+        let value = roleInput.value.trim();
+        if (!value) {
+          roleInput.classList.add("is-invalid");
+          return false;
+        } else {
+          roleInput.classList.remove("is-invalid");
+          return true;
+        }
+      }
+      roleInput.addEventListener("input", () => {
+        validateRole();
+        updateSubmitState();
+      });
+
+      // ตรวจสอบ checkbox
+      confirmCheck.addEventListener("change", () => {
+        if (!confirmCheck.checked) {
+          consentWarning.style.display = "inline";
+        } else {
+          consentWarning.style.display = "none";
+        }
+        updateSubmitState();
+      });
+
+      // ✅ ตรวจสอบสถานะปุ่มทุกครั้ง
+      function updateSubmitState() {
+        if (validateRole() && uploadedFile && confirmCheck.checked) {
+          submitBtn.classList.add("enabled");
+          submitBtn.disabled = false;
+        } else {
+          submitBtn.classList.remove("enabled");
+          submitBtn.disabled = true;
+        }
+      }
+
+      // ✅ กดปุ่ม submit (improved: call registerActivity then add_request)
+      submitBtn.addEventListener("click", async () => {
+        if (!validateRole() || !uploadedFile || !confirmCheck.checked) return;
+
+        if (!activity_unique_id || !student_unique_id) {
+          showError(
+            "ไม่พบรหัสกิจกรรมหรือข้อมูลนักศึกษา กรุณารีเฟรชหน้าหรือเข้าสู่ระบบใหม่"
+          );
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = "กำลังส่ง...";
+
+        try {
+          // 1) Register student for activity (server may create enrollment / reg_act)
+          const regResult = await registerActivity(
+            student_unique_id,
+            activity_unique_id
+          );
+          console.log("registerActivity result:", regResult);
+
+          // 2) Send request with proof (add_request) — keep existing behaviour
+          const payload = {
+            activity_id: activity_unique_id,
+            std_id: student_unique_id,
+            status: "pending",
+            role: roleInput.value.trim(),
+            img: previewContainer.querySelector("img")?.src || null,
+          };
+
+          const resp = await fetch("../api/add_request", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+
+          if (!resp.ok) {
+            const text = await resp.text();
+            throw new Error("add_request failed: " + resp.status + " " + text);
+          }
+
+          const addReqData = await resp.json();
+          console.log("add_request response:", addReqData);
+
+          // show success modal and reset
+          const successModal = new bootstrap.Modal(
+            document.getElementById("successModal")
+          );
+          successModal.show();
+
+          document
+            .getElementById("closeModalBtn")
+            .addEventListener("click", () => {
+              form.reset();
+              previewContainer.innerHTML = "";
+              fileNameLabel.textContent = "ยังไม่ได้เลือกไฟล์";
+              uploadedFile = null;
+              updateSubmitState();
+            });
+
+          // redirect after short delay
+          setTimeout(() => {
+            window.location.href = "status.html";
+          }, 700);
+        } catch (err) {
+          console.error("Submission error:", err);
+          showError("⚠️ ไม่สามารถลงทะเบียนกิจกรรมที่เคยลงทะเบียนแล้วได้");
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "ยืนยันข้อมูล";
+        }
+      });
+
+      // Improved registerActivity: returns parsed JSON on success, throws on error
+      async function registerActivity(studentId, actId) {
+        if (!studentId || !actId) throw new Error("Missing studentId or actId");
+
+        const url = "../api/register_activity"; // adjust path if your server uses different route
+        const body = { student_id: studentId, act_id: actId };
+
+        try {
+          const res = await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          });
+
+          const text = await res.text(); // read raw for better errors
+          let json;
+          try {
+            json = text ? JSON.parse(text) : null;
+          } catch (e) {
+            json = text;
+          }
+
+          if (!res.ok) {
+            console.error("register_activity failed:", res.status, json);
+            throw new Error(json?.error || json || "Status " + res.status);
+          }
+
+          return json;
+        } catch (err) {
+          console.error("registerActivity error:", err);
+          throw err;
+        }
+      }
+
+      function showError(message) {
+        document.getElementById("errorModalMessage").innerText = message;
+        const errorModal = new bootstrap.Modal(
+          document.getElementById("errorModal")
+        );
+        errorModal.show();
+      }
+    </script>
+
+    <!-- ========= Success Modal ========= -->
+    <div
+      class="modal fade modal-top"
+      id="successModal"
+      tabindex="-1"
+      aria-labelledby="successModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="successModalLabel">System.says</h5>
+          </div>
+          <div class="modal-body text-left">
+            <p>ส่งข้อมูล สำเร็จ!</p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              id="closeModalBtn"
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========= Error Modal ========= -->
+    <div
+      class="modal fade modal-top"
+      id="errorModal"
+      tabindex="-1"
+      aria-labelledby="errorModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header bg-danger text-white">
+            <h5 class="modal-title" id="errorModalLabel">System.says</h5>
+          </div>
+          <div class="modal-body text-left" id="errorModalMessage">
+            ข้อผิดพลาด
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
