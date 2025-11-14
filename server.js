@@ -11,7 +11,7 @@ const session = require('express-session'); // Add this line
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY); // <-- ADD THIS LINE
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // Session middleware should come BEFORE any route that uses req.session
 app.use(session({
