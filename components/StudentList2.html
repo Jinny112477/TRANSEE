@@ -170,7 +170,7 @@
       // Convert academic_year: if it's a year number, add 543
      const academicYear = data.academic_year;
      const buddhistAcademicYear = academicYear && !isNaN(academicYear) 
-       ? (Number(academicYear) + 543)
+       ? (Number(academicYear))
        : academicYear;
      document.getElementById('year').textContent = buddhistAcademicYear;
       document.getElementById('gpa').textContent = data.GPAX;

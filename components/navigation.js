@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     supabaseAnonKey
   );
 
+  // Handle 🏠 Home button
   let studentId = null;
 
   // 🔹 Fetch current user info from backend session
@@ -20,7 +21,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error("Error fetching student info:", err);
   }
 
-  // 🏠 Home button
   const homeIcon = document.getElementById("homeIcon");
   if (homeIcon) {
     homeIcon.addEventListener("click", () => {
@@ -31,6 +31,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
+  // Handle 🔙 Back button behavior : student path
   let academicYear = null;
 
   // 🔹 Fetch current academic year from backend session or context
@@ -44,8 +45,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error("Error fetching academic year:", err);
   }
 
-  // Back button logic
-  // 🔙 Back button behavior
   const backBtnYear = document.getElementById("backButtonYear");
   if (backBtnYear) {
     backBtnYear.addEventListener("click", () => {
@@ -64,6 +63,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
+  // Handle 🔙 Back button behavior: admin path
   let activityId = null;
 
   // 🔹 Fetch activity id from backend session or context
@@ -79,7 +79,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error("Error fetching activity id:", err);
   }
 
-  // 🔙 Back button behavior
   const backBtn = document.getElementById("backButton");
   if (backBtn) {
     backBtn.addEventListener("click", () => {
