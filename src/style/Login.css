@@ -67,6 +67,23 @@ body, html {
     font-weight: bold;
 }
 
+/* Change size and color */
+#togglePassword i {
+  font-size: 1.2rem;   /* bigger or smaller */
+  color: #000000;         /* any color you like */
+}
+
+/* Change hover color */
+#togglePassword i:hover {
+  color: #a6362f;
+}
+
+#togglePassword {
+  right: 10px;          /* distance from right edge */
+  margin-top: 2px;
+  transform: translateY(-50%);
+}
+
 /* Login Button */
 .btn-login {
     background-color: #a6362f;

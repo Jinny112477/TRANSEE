@@ -13,7 +13,7 @@ body {
   flex-direction: column;   /* เรียงแนวตั้ง */
   align-items: center;      /* จัดให้อยู่กลาง */
   gap: 20px;                /* ระยะห่างแต่ละการ์ด */
-  padding-top: 120px;        /* ระยะห่างจากขอบบน */
+  padding-top: 150px;        /* ระยะห่างจากขอบบน */
   padding-bottom: 30px;      /* ระยะห่างจากขอบล่าง */
 }
 
