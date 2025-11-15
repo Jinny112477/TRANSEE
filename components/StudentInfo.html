@@ -58,6 +58,7 @@
             <input type="file" id="fileInput" accept=".jpg,.png" hidden />
             <button
               class="upload-btn"
+              id="uploadBtn"
               onclick="document.getElementById('fileInput').click()"
             >
               อัปโหลดรูปภาพ (.jpg)
@@ -513,10 +514,54 @@
             birthdateInput.dataset.gregorian = formatDateLocal(selectedDate);
           });
 
+          const fileInput = document.getElementById("fileInput");
+          const preview = document.getElementById("preview");
+          const uploadBtn = document.getElementById("uploadBtn");
+
+          // Track if image is uploaded
+          let isProfileUploaded = false;
+
+          fileInput.addEventListener("change", function (event) {
+            const file = event.target.files[0];
+            if (file) {
+              const reader = new FileReader();
+              reader.onload = function (e) {
+                preview.src = e.target.result;
+                isProfileUploaded = true;
+                // Remove red glow when uploaded
+                uploadBtn.classList.remove("btn-error");
+              };
+              reader.readAsDataURL(file);
+            }
+          });
+
+          // Consent checkbox cannot be checked unless profile uploaded
+          consent.addEventListener("change", () => {
+            if (!isProfileUploaded) {
+              consent.checked = false;
+              consentWarning.style.display = "inline";
+              uploadBtn.classList.add("btn-error");
+            } else {
+              if (!consent.checked) {
+                consentWarning.style.display = "inline";
+              } else {
+                consentWarning.style.display = "none";
+                uploadBtn.classList.remove("btn-error");
+              }
+            }
+          });
+
           // Submit button
           document
             .getElementById("submitBtn")
             .addEventListener("click", async function () {
+              // Stop submission if profile not uploaded
+              if (!isProfileUploaded) {
+                uploadBtn.classList.add("btn-error");
+                alert("กรุณาอัปโหลดรูปนักศึกษา!");
+                return; // Stop submission
+              }
+
               let isValid = true;
 
               for (const input of inputs) {
@@ -526,43 +571,38 @@
                 }
               }
 
-              if (!consent.checked) {
-                consent.classList.add("is-invalid");
-                consentWarning.style.display = "inline";
-                isValid = false;
-              }
+              if (!isValid) return; // Stop submission if other fields invalid
 
-              if (isValid) {
-                const data = {
-                  pronouns: document.getElementById("floatingSelectP").value,
-                  full_name: document.getElementById("fullName").value,
-                  student_id: document.getElementById("studentID").value,
-                  birth_date: birthdateInput.dataset.gregorian, // send Gregorian date
-                  email: document.getElementById("email").value,
-                  phone_number: document.getElementById("phone").value,
-                  faculty: document.getElementById("floatingSelect").value,
-                  academic_year: document.getElementById("year").value,
-                  GPAX: document.getElementById("gpax").value,
-                  img: document.getElementById("preview").src,
-                };
+              // If all valid, submit data
+              const data = {
+                pronouns: document.getElementById("floatingSelectP").value,
+                full_name: document.getElementById("fullName").value,
+                student_id: document.getElementById("studentID").value,
+                birth_date: birthdateInput.dataset.gregorian,
+                email: document.getElementById("email").value,
+                phone_number: document.getElementById("phone").value,
+                faculty: document.getElementById("floatingSelect").value,
+                academic_year: document.getElementById("year").value,
+                GPAX: document.getElementById("gpax").value,
+                img: document.getElementById("preview").src,
+              };
 
-                await fetch("/add-student", {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify(data),
+              await fetch("/add-student", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+              });
+
+              const successModal = new bootstrap.Modal(
+                document.getElementById("successModal")
+              );
+              successModal.show();
+
+              document
+                .getElementById("closeModalBtn")
+                .addEventListener("click", function () {
+                  window.location.href = "HomePage.html";
                 });
-
-                const successModal = new bootstrap.Modal(
-                  document.getElementById("successModal")
-                );
-                successModal.show();
-
-                document
-                  .getElementById("closeModalBtn")
-                  .addEventListener("click", function () {
-                    window.location.href = "HomePage.html";
-                  });
-              }
             });
 
           // GPAX input fix

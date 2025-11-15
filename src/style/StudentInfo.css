@@ -25,6 +25,13 @@ body {
   color: #7e1425; /* สีแดงเข้มตอน hover */
 }
 
+/* Make the upload button glow red */
+.btn-error {
+  border: 2px solid red;
+  box-shadow: 0 0 10px red;
+  animation: glow 1s infinite alternate;
+}
+
 /* Left side */
 .left-panel {
     background: linear-gradient(to bottom, #b23a3a, #ffffff);

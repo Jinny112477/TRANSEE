@@ -13,6 +13,10 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Increase payload size limits to 10mb
+app.use(express.json({ limit: '20mb' }));
+app.use(express.urlencoded({ limit: '20mb', extended: true }));
+
 // Session middleware should come BEFORE any route that uses req.session
 app.use(session({
     secret: 'your-secret-key', // use a strong secret in production
@@ -21,8 +25,6 @@ app.use(session({
     cookie: { secure: false } // set to true if using HTTPS
 }));
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json())
 app.use(express.static('components'));
 app.use('/src', express.static('src')); // Add this line
 app.use('/components', express.static(path.join(__dirname, 'components')));
